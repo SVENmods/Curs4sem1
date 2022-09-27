@@ -1,6 +1,8 @@
 const AvatarDisplay = () => {
      return ( 
-          <div>AvatarDisplay</div>
+          <div className="avatar-display">
+
+          </div>
      );
 }
 

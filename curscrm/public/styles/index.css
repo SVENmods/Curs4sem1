@@ -74,5 +74,62 @@ h1, h2, h3, h4, h5, h6 {
 /*--------------------*/
 .App {
   display: flex;
+}
+
+nav {
+  display: flex;
   flex-direction: column;
+  font-size: 30px;
+  height: 100vh;
+  background-color: rgb(43, 43, 63);
+  color: rgb(255, 255, 255);
+  text-align: center;
+  justify-content: space-between;
+}
+nav .controls-containerm, nav .logo-container {
+  padding: 40px 25px;
+  display: flex;
+  flex-direction: column;
+}
+nav .logo-container img {
+  width: 20px;
+}
+nav .controls-container .icons {
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+
+.dashboard {
+  padding: 30px;
+  width: 100%;
+}
+.dashboard .ticket-container {
+  height: 80vh;
+}
+
+.ticket-card {
+  display: flex;
+  width: 100%;
+}
+.ticket-card #link {
+  display: flex;
+  width: 100%;
+}
+.ticket-card #link > * {
+  background-color: rgb(221, 221, 221);
+  margin: 2px;
+  padding: 30px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.ticket-card .ticket-color {
+  width: 15px !important;
+  padding: 10px !important;
+  margin: 2px;
+}
+.ticket-card .avatar-container {
+  display: flex;
+  justify-content: center;
+  width: 80px;
 }

@@ -3,7 +3,7 @@ import React from 'react';
 
 const TicketPage = () => {
      return ( 
-          <div>TicketPage</div>
+          <div>TicketPage!</div>
      );
 }
 export default TicketPage;
