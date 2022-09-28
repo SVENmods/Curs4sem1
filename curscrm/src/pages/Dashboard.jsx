@@ -19,7 +19,7 @@ const Dashboard = () => {
           },
           {
                category: 'Q1 2022',
-               color: 'red',
+               color: 'green',
                title: 'Placeholder tittle', 
                owner: 'Ania Kubow', 
                avatar: '',
@@ -40,7 +40,39 @@ const Dashboard = () => {
                progress: 70, 
                description: 'Make a video about AI.',
                timestamp: '2022-02-11T07:36:17+0000'
+          },
+          {
+               category: 'A2 2022',
+               color: 'red',
+               title: 'Build and Sell AI Model', 
+               owner: 'Ania Kubow', 
+               avatar: '',
+               status: 'working on it',
+               priority: 2,
+               progress: 70, 
+               description: 'Make a video about AI.',
+               timestamp: '2022-02-11T07:36:17+0000'
+          },
+          {
+               category: 'B32 2022',
+               color: 'red',
+               title: 'Build and Sell AI Model', 
+               owner: 'Ania Kubow', 
+               avatar: '',
+               status: 'stuck',
+               priority: 2,
+               progress: 70, 
+               description: 'Make a video about AI.',
+               timestamp: '2022-02-11T07:36:17+0000'
           }
+     ]
+
+     const colors = [ 
+          'rgb(255, 179, 186)',
+          'rgb(255, 223, 186)',
+          'rgb(255, 255, 186)',
+          'rgb(186, 255, 201)',
+          'rgb(186, 255, 255)'
      ]
 
      const uniqueCategories = [
@@ -58,7 +90,7 @@ const Dashboard = () => {
                                    .map((filteredTicket, _index) => (
                                         <TicketCard
                                         id = {_index}
-                                        color = {filteredTicket.color}
+                                        color = {colors[categoryIndex] || colors[0]}
                                         ticket = {filteredTicket}
                                         />
                               ))}
