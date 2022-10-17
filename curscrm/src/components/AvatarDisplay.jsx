@@ -1,7 +1,7 @@
 import blankAvatar from '../img/blank-profile-picture-973460__480.webp'
 
 const AvatarDisplay = ({ticket}) => {
-     return ( 
+     return (
           <div className="avatar-container">
                <div className='img-container'>
                <img src={

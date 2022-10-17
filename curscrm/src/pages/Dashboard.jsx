@@ -1,103 +1,71 @@
-import React from 'react';
-import TicketCard from '../components/TicketCard';
-
+import TicketCard from '../components/TicketCard'
+import { useState, useEffect, useContext } from 'react'
+import axios from 'axios'
+import CategoriesContext from '../context'
 
 const Dashboard = () => {
+  const [tickets, setTickets] = useState()
+  const { categories, setCategories } = useContext(CategoriesContext)
 
-     const tickets = [
-          {
-               category: 'Q1 2022',
-               color: 'red',
-               title: 'NFT Safety 101 Video', 
-               owner: 'Ania Kubow', 
-               avatar: 'https://avatars.githubusercontent.com/u/94043508?v=4',
-               status: 'done',
-               priority: 5,
-               progress: 10, 
-               description: 'Make a video showcasing how to work with NFTs safely.',
-               timestamp: '2022-02-11T07:36:17+0000'
-          },
-          {
-               category: 'Q1 2022',
-               color: 'green',
-               title: 'Placeholder tittle', 
-               owner: 'Ania Kubow', 
-               avatar: '',
-               status: 'done',
-               priority: 3,
-               progress: 40, 
-               description: 'Make a video showcasing how to work with NFTs safely.',
-               timestamp: '2022-02-11T07:36:17+0000'
-          },
-          {
-               category: 'A2 2022',
-               color: 'red',
-               title: 'Build and Sell AI Model', 
-               owner: 'Ania Kubow', 
-               avatar: '',
-               status: 'working on it',
-               priority: 2,
-               progress: 70, 
-               description: 'Make a video about AI.',
-               timestamp: '2022-02-11T07:36:17+0000'
-          },
-          {
-               category: 'A2 2022',
-               color: 'red',
-               title: 'Build and Sell AI Model', 
-               owner: 'Ania Kubow', 
-               avatar: '',
-               status: 'working on it',
-               priority: 2,
-               progress: 70, 
-               description: 'Make a video about AI.',
-               timestamp: '2022-02-11T07:36:17+0000'
-          },
-          {
-               category: 'B32 2022',
-               color: 'red',
-               title: 'Build and Sell AI Model', 
-               owner: 'Ania Kubow', 
-               avatar: '',
-               status: 'stuck',
-               priority: 2,
-               progress: 70, 
-               description: 'Make a video about AI.',
-               timestamp: '2022-02-11T07:36:17+0000'
-          }
-     ]
+  useEffect(() => {
+     async function getData(){
+          const response = await axios.get('http://localhost:8000/tickets')
 
-     const colors = [ 
-          'rgb(255, 179, 186)',
-          'rgb(255, 223, 186)',
-          'rgb(255, 255, 186)',
-          'rgb(186, 255, 201)',
-          'rgb(186, 255, 255)'
-     ]
+    const dataObject = response.data.data
 
-     const uniqueCategories = [
-          ...new Set(tickets?.map(({ category}) => category))
-     ]
+    const arrayOfKeys = Object.keys(dataObject)
+    const arrayOfData = Object.keys(dataObject).map((key) => dataObject[key])
+    const formattedArray = []
+    arrayOfKeys.forEach((key, index) => {
+      const formmatedData = { ...arrayOfData[index] }
+      formmatedData['documentId'] = key
+      formattedArray.push(formmatedData)
+    })
 
-     return (
-          <div className='dashboard'>
-               <h1>My Project</h1>
-               <div className='ticket-container'>
-                    {tickets && uniqueCategories?.map((uniqueCategory, categoryIndex) => (
-                         <div key={categoryIndex}>
-                              <h3>{uniqueCategory}</h3>
-                              {tickets.filter(ticket => ticket.category === uniqueCategory)
-                                   .map((filteredTicket, _index) => (
-                                        <TicketCard
-                                        id = {_index}
-                                        color = {colors[categoryIndex] || colors[0]}
-                                        ticket = {filteredTicket}
-                                        />
-                              ))}
-                         </div>
-                    ))}
-               </div>
+    setTickets(formattedArray)
+     }
+    
+     getData()}, [])
+
+  useEffect(() => {
+    setCategories([...new Set(tickets?.map(({ category }) => category))])
+  }, [tickets])
+
+  const colors = [
+    'rgb(255,179,186)',
+    'rgb(255,223,186)',
+    'rgb(255,255,186)',
+    'rgb(186,255,201)',
+    'rgb(186,225,255)',
+  ]
+
+  const uniqueCategories = [
+    ...new Set(tickets?.map(({ category }) => category)),
+  ]
+
+  return (
+    <div className="dashboard">
+     <h1>My Projects</h1>
+     <div className="ticket-container">
+          {tickets &&
+          uniqueCategories?.map((uniqueCategory, categoryIndex) => (
+          <div key={categoryIndex}>
+          <h3>{uniqueCategory}</h3>
+          {tickets
+               .filter((ticket) => ticket.category === uniqueCategory)
+               .map((filteredTicket, _index) => (
+               <TicketCard
+                    key={_index}
+                    color={colors[categoryIndex] || colors[0]}
+                    ticket={filteredTicket}
+                    
+               />
+               ))}
           </div>
-     );
+          ))}
+     </div>
+</div>
+)
 }
-export default Dashboard;
+
+export default Dashboard
