@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import TicketPage from "./pages/TicketPage";
 import Nav from "./components/Nav";
-import CategoriesContext from "./context";
+import CategoriesContext from "./Hooks/context";
 
 function App() {
   const [categories, setCategories] = useState(null);

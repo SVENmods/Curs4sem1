@@ -2,7 +2,7 @@
 import { useState, useEffect, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
-import CategoriesContext from '../context'
+import CategoriesContext from '../Hooks/context'
 
 const TicketPage = ({ editMode }) => {
 
@@ -11,6 +11,7 @@ const TicketPage = ({ editMode }) => {
     progress: 0,
     timestamp: new Date().toISOString(),
   })
+  // eslint-disable-next-line no-unused-vars
   const { categories, setCategories } = useContext(CategoriesContext)
 
   const navigate = useNavigate()
@@ -61,9 +62,9 @@ const TicketPage = ({ editMode }) => {
      }
   }, [])
 
-  console.log('EDITcategories', categories)
-  console.log('formData', formData.status)
-  console.log('formData.status', formData.status === 'stuck')
+  // console.log('EDITcategories', categories)
+  // console.log('formData', formData.status)
+  // console.log('formData.status', formData.status === 'stuck')
   return (
     <div className="ticket">
       <h1>{editMode ? 'Update Your Ticket' : 'Create a Ticket'}</h1>
@@ -161,6 +162,7 @@ const TicketPage = ({ editMode }) => {
 
             {editMode && (
               <>
+              <label htmlFor="progress">Progress</label>
                 <input
                   type="range"
                   id="progress"
@@ -168,9 +170,10 @@ const TicketPage = ({ editMode }) => {
                   value={formData.progress}
                   min="0"
                   max="100"
+                  step={10}
                   onChange={handleChange}
                 />
-                <label htmlFor="progress">Progress</label>
+              
 
                 <label>Status</label>
                 <select
@@ -178,20 +181,20 @@ const TicketPage = ({ editMode }) => {
                   value={formData.status}
                   onChange={handleChange}
                 >
-                  <option selected={formData.status == 'done'} value="done">
+                  <option defaultValue={formData.status == 'done'} value="done">
                     Done
                   </option>
                   <option
-                    selected={formData.status == 'working on it'}
+                    defaultValue={formData.status == 'working on it'}
                     value="working on it"
                   >
                     Working on it
                   </option>
-                  <option selected={formData.status == 'stuck'} value="stuck">
+                  <option defaultValue={formData.status == 'stuck'} value="stuck">
                     Stuck
                   </option>
                   <option
-                    selected={formData.status == 'not started'}
+                    defaultValue={formData.status == 'not started'}
                     value="not started"
                   >
                     Not Started

@@ -1,10 +1,11 @@
 import TicketCard from '../components/TicketCard'
 import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
-import CategoriesContext from '../context'
+import CategoriesContext from '../Hooks/context'
 
 const Dashboard = () => {
   const [tickets, setTickets] = useState()
+  // eslint-disable-next-line no-unused-vars
   const { categories, setCategories } = useContext(CategoriesContext)
 
   useEffect(() => {
@@ -29,7 +30,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     setCategories([...new Set(tickets?.map(({ category }) => category))])
-  }, [tickets])
+  }, [setCategories, tickets])
 
   const colors = [
     'rgb(255,179,186)',

@@ -229,3 +229,7 @@ nav .controls-container .icons {
 .ticket form .multiple-input-container {
   margin: 20px 0px 20px 0px;
 }
+.ticket .img-preview img {
+  max-width: 150px;
+  max-height: 150px;
+}
