@@ -3,13 +3,14 @@ import { useState, useEffect, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import CategoriesContext from '../Hooks/context'
+import FormInput from '../UI/FormInput'
 
 const TicketPage = ({ editMode }) => {
-
   const [formData, setFormData] = useState({
     status: 'not started',
     progress: 0,
     timestamp: new Date().toISOString(),
+    editMode: false,
   })
   // eslint-disable-next-line no-unused-vars
   const { categories, setCategories } = useContext(CategoriesContext)
@@ -50,17 +51,22 @@ const TicketPage = ({ editMode }) => {
     }
   }
 
-  const fetchData = async () => {
-    const response = await axios.get(`http://localhost:8000/tickets/${id}`)
-//     console.log('AAAAAA', response)
-    setFormData(response.data.data)
-  }
-
   useEffect(() => {
-     if (editMode) {
-          fetchData()
-     }
-  }, [])
+    
+    if (editMode) {
+      const fetchData = async () => {
+        const response = await axios.get(`http://localhost:8000/tickets/${id}`)
+    //     console.log('AAAAAA', response)
+        setFormData(response.data.data)
+      }
+          fetchData();
+          console.log(editMode)
+    }
+      // window.location.reload();
+      
+  }, [editMode, id])
+
+  
 
   // console.log('EDITcategories', categories)
   // console.log('formData', formData.status)
@@ -69,10 +75,10 @@ const TicketPage = ({ editMode }) => {
     <div className="ticket">
       <h1>{editMode ? 'Update Your Ticket' : 'Create a Ticket'}</h1>
       <div className="ticket-container">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} id="ticketForm">
           <section>
             <label htmlFor="title">Title</label>
-            <input
+            <FormInput
               id="title"
               name="title"
               type="text"
@@ -82,7 +88,7 @@ const TicketPage = ({ editMode }) => {
             />
 
             <label htmlFor="description">Description</label>
-            <input
+            <FormInput
               id="description"
               name="description"
               type="text"
@@ -98,12 +104,12 @@ const TicketPage = ({ editMode }) => {
               onChange={handleChange}
             >
               {categories?.map((category, _index) => (
-                <option value={category}>{category}</option>
+                <option key={_index} value={category}>{category}</option>
               ))}
             </select>
 
             <label htmlFor="new-category">New Category</label>
-            <input
+            <FormInput
               id="new-category"
               name="category"
               type="text"
@@ -113,7 +119,7 @@ const TicketPage = ({ editMode }) => {
 
             <label>Priority</label>
             <div className="multiple-input-container">
-              <input
+              <FormInput
                 id="priority-1"
                 name="priority"
                 type="radio"
@@ -122,7 +128,7 @@ const TicketPage = ({ editMode }) => {
                 checked={formData.priority == 1}
               />
               <label htmlFor="priority-1">1</label>
-              <input
+              <FormInput
                 id="priority-2"
                 name="priority"
                 type="radio"
@@ -131,7 +137,7 @@ const TicketPage = ({ editMode }) => {
                 checked={formData.priority == 2}
               />
               <label htmlFor="priority-2">2</label>
-              <input
+              <FormInput
                 id="priority-3"
                 name="priority"
                 type="radio"
@@ -140,7 +146,7 @@ const TicketPage = ({ editMode }) => {
                 checked={formData.priority == 3}
               />
               <label htmlFor="priority-3">3</label>
-              <input
+              <FormInput
                 id="priority-4"
                 name="priority"
                 type="radio"
@@ -149,7 +155,7 @@ const TicketPage = ({ editMode }) => {
                 checked={formData.priority == 4}
               />
               <label htmlFor="priority-4">4</label>
-              <input
+              <FormInput
                 id="priority-5"
                 name="priority"
                 type="radio"
@@ -163,8 +169,8 @@ const TicketPage = ({ editMode }) => {
             {editMode && (
               <>
               <label htmlFor="progress">Progress</label>
-                <input
-                  type="range"
+              <FormInput
+                type="range"
                   id="progress"
                   name="progress"
                   value={formData.progress}
@@ -172,7 +178,7 @@ const TicketPage = ({ editMode }) => {
                   max="100"
                   step={10}
                   onChange={handleChange}
-                />
+              />
               
 
                 <label>Status</label>
@@ -202,13 +208,12 @@ const TicketPage = ({ editMode }) => {
                 </select>
               </>
             )}
-
-            <input type="submit" />
+            <FormInput  type="submit"/>
           </section>
 
           <section>
             <label htmlFor="owner">Owner</label>
-            <input
+            <FormInput
               id="owner"
               name="owner"
               type="owner"
@@ -218,7 +223,7 @@ const TicketPage = ({ editMode }) => {
             />
 
             <label htmlFor="avatar">Avatar</label>
-            <input
+            <FormInput
               id="avatar"
               name="avatar"
               type="url"
