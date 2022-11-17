@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import TicketPage from "./pages/TicketPage";
 import Nav from "./components/Nav";
 import CategoriesContext from "./Hooks/context";
+import Profile from "./pages/Profile";
 
 function App() {
   const [categories, setCategories] = useState(null);
@@ -21,6 +22,7 @@ function App() {
               path="/ticket/:id"
               element={<TicketPage editMode={true} />}
             />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </BrowserRouter>
       </CategoriesContext.Provider>

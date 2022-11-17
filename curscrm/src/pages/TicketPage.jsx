@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import CategoriesContext from '../Hooks/context'
 import FormInput from '../UI/FormInput'
+import { useAuth0 } from "@auth0/auth0-react"
 
 const TicketPage = ({ editMode }) => {
   const [formData, setFormData] = useState({
@@ -27,6 +28,8 @@ const TicketPage = ({ editMode }) => {
       [name]: value,
     }))
   }
+
+  const { user, isAuthenticated, isLoading } = useAuth0();
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -52,26 +55,33 @@ const TicketPage = ({ editMode }) => {
   }
 
   useEffect(() => {
-    
     if (editMode) {
       const fetchData = async () => {
         const response = await axios.get(`http://localhost:8000/tickets/${id}`)
     //     console.log('AAAAAA', response)
         setFormData(response.data.data)
+        
       }
           fetchData();
           console.log(editMode)
+          
     }
       // window.location.reload();
       
   }, [editMode, id])
-
+  
+  // if(formData.avatar == user.picture){
+  //   const chekAvatar = true
+  //   console.log(chekAvatar)
+  // }
+  // else{
+  //   const chekAvatar = false
+  //   console.log(chekAvatar)
+  // }
   
 
-  // console.log('EDITcategories', categories)
-  // console.log('formData', formData.status)
-  // console.log('formData.status', formData.status === 'stuck')
   return (
+    isAuthenticated && (
     <div className="ticket">
       <h1>{editMode ? 'Update Your Ticket' : 'Create a Ticket'}</h1>
       <div className="ticket-container">
@@ -85,6 +95,7 @@ const TicketPage = ({ editMode }) => {
               onChange={handleChange}
               required={true}
               value={formData.title}
+              disabled = {formData.owner != user.name && editMode}
             />
 
             <label htmlFor="description">Description</label>
@@ -95,6 +106,7 @@ const TicketPage = ({ editMode }) => {
               onChange={handleChange}
               required={true}
               value={formData.description}
+              disabled = {formData.owner != user.name && editMode}
             />
 
             <label>Category</label>
@@ -102,6 +114,7 @@ const TicketPage = ({ editMode }) => {
               name="category"
               value={formData.category}
               onChange={handleChange}
+              disabled = {formData.owner != user.name && editMode}
             >
               {categories?.map((category, _index) => (
                 <option key={_index} value={category}>{category}</option>
@@ -115,6 +128,7 @@ const TicketPage = ({ editMode }) => {
               type="text"
               onChange={handleChange}
               value={formData.category}
+              disabled = {formData.owner != user.name && editMode}
             />
 
             <label>Priority</label>
@@ -126,6 +140,7 @@ const TicketPage = ({ editMode }) => {
                 onChange={handleChange}
                 value={1}
                 checked={formData.priority == 1}
+                disabled = {formData.owner != user.name && editMode}
               />
               <label htmlFor="priority-1">1</label>
               <FormInput
@@ -135,6 +150,7 @@ const TicketPage = ({ editMode }) => {
                 onChange={handleChange}
                 value={2}
                 checked={formData.priority == 2}
+                disabled = {formData.owner != user.name && editMode}
               />
               <label htmlFor="priority-2">2</label>
               <FormInput
@@ -144,6 +160,7 @@ const TicketPage = ({ editMode }) => {
                 onChange={handleChange}
                 value={3}
                 checked={formData.priority == 3}
+                disabled = {formData.owner != user.name && editMode}
               />
               <label htmlFor="priority-3">3</label>
               <FormInput
@@ -153,6 +170,7 @@ const TicketPage = ({ editMode }) => {
                 onChange={handleChange}
                 value={4}
                 checked={formData.priority == 4}
+                disabled = {formData.owner != user.name && editMode}
               />
               <label htmlFor="priority-4">4</label>
               <FormInput
@@ -162,6 +180,7 @@ const TicketPage = ({ editMode }) => {
                 onChange={handleChange}
                 value={5}
                 checked={formData.priority == 5}
+                disabled = {formData.owner != user.name && editMode}
               />
               <label htmlFor="priority-5">5</label>
             </div>
@@ -178,6 +197,7 @@ const TicketPage = ({ editMode }) => {
                   max="100"
                   step={10}
                   onChange={handleChange}
+                  disabled = {formData.owner != user.name && editMode}
               />
               
 
@@ -186,6 +206,7 @@ const TicketPage = ({ editMode }) => {
                   name="status"
                   value={formData.status}
                   onChange={handleChange}
+                  disabled = {formData.owner != user.name && editMode}
                 >
                   <option defaultValue={formData.status == 'done'} value="done">
                     Done
@@ -208,7 +229,7 @@ const TicketPage = ({ editMode }) => {
                 </select>
               </>
             )}
-            <FormInput  type="submit"/>
+            <FormInput id="submit" type="submit" disabled = {formData.owner != user.name && editMode}/>
           </section>
 
           <section>
@@ -219,7 +240,8 @@ const TicketPage = ({ editMode }) => {
               type="owner"
               onChange={handleChange}
               required={true}
-              value={formData.owner}
+              value={formData.owner == undefined ? user.name : formData.owner}
+              disabled = {formData.owner != user.name && editMode}
             />
 
             <label htmlFor="avatar">Avatar</label>
@@ -228,17 +250,23 @@ const TicketPage = ({ editMode }) => {
               name="avatar"
               type="url"
               onChange={handleChange}
+              value={editMode ? formData.avatar : formData.avatar = user.picture}
+              disabled = {true}
             />
             <div className="img-preview">
-              {formData.avatar && (
-                <img src={formData.avatar} alt="imagePreview" />
+            {/* formData.avatar &&  */}
+              {editMode ? formData.avatar &&(
+                <img src={editMode ? formData.avatar : user.picture} alt="imagePreview" />
+              ) : user.picture && (
+                <img src={editMode ? formData.avatar : user.picture} alt="imagePreview" />
               )}
             </div>
           </section>
         </form>
       </div>
     </div>
-  )
+  ))
+  
 }
 
 export default TicketPage

@@ -3,7 +3,7 @@ import React from 'react';
 
 const FormInput = (props) => {
      return (
-          <input {...props}/>
+          <input {...props} />
           // className={classes.myInput} 
      );
 }
