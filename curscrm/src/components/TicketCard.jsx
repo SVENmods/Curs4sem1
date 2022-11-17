@@ -4,9 +4,13 @@ import ProgressDisplay from './ProgressDisplay'
 import StatusDisplay from './StatusDisplay'
 import AvatarDisplay from './AvatarDisplay'
 import DeleteBlock from './DeleteBlock'
+import { useAuth0 } from '@auth0/auth0-react'
 
 const TicketCard = ({ color, ticket }) => {
-  return (
+
+  const { user, isAuthenticated, isLoading } = useAuth0();
+
+  return isAuthenticated ?(
     <div className="ticket-card">
       <div className="ticket-color" style={{ backgroundColor: color }}></div>
       <Link to={`/ticket/${ticket.documentId}`} id="link">
@@ -17,6 +21,18 @@ const TicketCard = ({ color, ticket }) => {
         <ProgressDisplay progress={Number(ticket.progress)} />
       </Link>
       <DeleteBlock documentId={ticket.documentId} />
+    </div>
+  )
+  :(
+    <div className="ticket-card">
+      <div className="ticket-color" style={{ backgroundColor: color }}></div>
+      <Link id="link">
+        <h3>{ticket.title}</h3>
+        <AvatarDisplay ticket={ticket} />
+        <StatusDisplay status={ticket.status} />
+        <PriorityDisplay priority={Number(ticket.priority)} />
+        <ProgressDisplay progress={Number(ticket.progress)} />
+      </Link>
     </div>
   )
 }

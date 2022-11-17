@@ -78,7 +78,7 @@ const TicketPage = ({ editMode }) => {
   //   const chekAvatar = false
   //   console.log(chekAvatar)
   // }
-  
+  console.log(isAuthenticated)
 
   return (
     isAuthenticated && (
@@ -97,7 +97,7 @@ const TicketPage = ({ editMode }) => {
               value={formData.title}
               disabled = {formData.owner != user.name && editMode}
             />
-
+            {/* && user.name == undefined ? true : false */}
             <label htmlFor="description">Description</label>
             <FormInput
               id="description"
@@ -240,7 +240,7 @@ const TicketPage = ({ editMode }) => {
               type="owner"
               onChange={handleChange}
               required={true}
-              value={formData.owner == undefined ? user.name : formData.owner}
+              value={editMode ? formData.owner : formData.owner = user.name}
               disabled = {formData.owner != user.name && editMode}
             />
 
