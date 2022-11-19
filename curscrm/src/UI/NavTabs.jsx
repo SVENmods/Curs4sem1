@@ -12,6 +12,7 @@ const NavTabs = () => {
                <div className="icons" onClick={() => navigate('/ticket')}>+</div>
                <div className="icons" onClick={() => navigate('/')}>=</div>
                <div className="icons" onClick={() => navigate('/profile')}>Profile</div>
+               <div className='icons' onClick={() => navigate('/statistics')}>Stat</div>
                <AuthenticationButton/>
           </div>
           

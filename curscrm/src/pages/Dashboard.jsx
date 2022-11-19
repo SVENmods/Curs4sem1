@@ -8,7 +8,10 @@ const Dashboard = () => {
   // eslint-disable-next-line no-unused-vars
   const { categories, setCategories } = useContext(CategoriesContext)
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
+    setLoading(true);
      async function getData(){
           const response = await axios.get('http://localhost:8000/tickets')
 
@@ -24,6 +27,7 @@ const Dashboard = () => {
     })
 
     setTickets(formattedArray)
+    setLoading(false);
      }
     
      getData()}, [])
@@ -43,7 +47,10 @@ const Dashboard = () => {
   const uniqueCategories = [
     ...new Set(tickets?.map(({ category }) => category)),
   ]
-
+  
+  if (loading) {
+    return <div>Loading ...</div>;
+  }
   return (
     <div className="dashboard">
      <h1>My Projects</h1>
