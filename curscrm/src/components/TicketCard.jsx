@@ -6,7 +6,7 @@ import AvatarDisplay from './AvatarDisplay'
 import DeleteBlock from './DeleteBlock'
 import { useAuth0 } from '@auth0/auth0-react'
 
-const TicketCard = ({ color, ticket }) => {
+const TicketCard = ({ color, ticket, title }) => {
 
   const { user, isAuthenticated, isLoading } = useAuth0();
 
@@ -14,7 +14,7 @@ const TicketCard = ({ color, ticket }) => {
     <div className="ticket-card">
       <div className="ticket-color" style={{ backgroundColor: color }}></div>
       <Link to={`/ticket/${ticket.documentId}`} id="link">
-        <h3>{ticket.title}</h3>
+        <h3>{title}</h3>
         <AvatarDisplay ticket={ticket} />
         <StatusDisplay status={ticket.status} />
         <PriorityDisplay priority={Number(ticket.priority)} />
@@ -27,7 +27,7 @@ const TicketCard = ({ color, ticket }) => {
     <div className="ticket-card">
       <div className="ticket-color" style={{ backgroundColor: color }}></div>
       <Link id="link">
-        <h3>{ticket.title}</h3>
+        <h3>{title}</h3>
         <AvatarDisplay ticket={ticket} />
         <StatusDisplay status={ticket.status} />
         <PriorityDisplay priority={Number(ticket.priority)} />
