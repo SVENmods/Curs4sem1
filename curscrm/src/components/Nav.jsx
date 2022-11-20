@@ -1,10 +1,7 @@
 import logo from '../img/Logo.png'
-import { useNavigate } from 'react-router-dom';
 import NavTabs from '../UI/NavTabs';
 
 const Nav = () => {
-
-     const navigate = useNavigate()
 
      return ( 
           <nav>
