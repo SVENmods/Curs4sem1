@@ -1,6 +1,9 @@
 import axios from 'axios'
+import { useAuth0 } from '@auth0/auth0-react'
 
-const DeleteBlock = ({ documentId }) => {
+const DeleteBlock = ({ ticket, documentId }) => {
+
+  const { user, isAuthenticated, isLoading } = useAuth0();
 
   const deleteTicket = async () => {
     const response = await axios.delete(`http://localhost:8000/tickets/${documentId}`)
@@ -11,8 +14,12 @@ const DeleteBlock = ({ documentId }) => {
 
   return (
     <div className="delete-block">
-      <div className="delete-icon" onClick={deleteTicket}>⨯</div>
-      </div>
+      {
+        ticket.owner === user.name && (
+          <div className="delete-icon" onClick={deleteTicket} id={ticket.owner}>⨯</div>
+        )
+      }
+    </div>
   )
 }
 

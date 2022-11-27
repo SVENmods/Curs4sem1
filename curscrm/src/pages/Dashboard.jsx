@@ -8,14 +8,40 @@ const SearchCard = (searchText, listOfCards) => {
   if (!searchText) {
     return listOfCards;
   }
-  return listOfCards.filter(({ title }) =>
-    title.toLowerCase().includes(searchText.toLowerCase())
+  let titles = listOfCards.filter(({ title }) =>
+    title.toLowerCase().includes(searchText.toLowerCase()))
+
+  // console.log(
+  //   titles
+  // )
+  return (
+    // listOfCards.filter(({ title }) =>
+    //   title.toLowerCase().includes(searchText.toLowerCase())
+    // )
+
+    // listOfCards.filter(obj => obj.name == filter.name && obj.address == filter.address)
+    // listOfCards.filter(({ textS }) => textS.toLowerCase().includes(searchText.toLowerCase()))
+
+    listOfCards.filter(({ title, category }) =>
+      title.toLowerCase().includes(searchText.toLowerCase())
+    )
+
+  );
+};
+
+const FilterCard = (filterText, listOfCards) => {
+  if (!filterText) {
+    return listOfCards;
+  }
+  return listOfCards.filter(({ category }) =>
+    category.toLowerCase().includes(filterText.toLowerCase())
   );
 };
 
 const Dashboard = () => {
   const [tickets, setTickets] = useState()
   const [searchTerm, setSearchTerm] = useState("");
+  const [filterTerm, setFilterTerm] = useState("");
 
   // eslint-disable-next-line no-unused-vars
   const { categories, setCategories } = useContext(CategoriesContext)
@@ -50,16 +76,45 @@ const Dashboard = () => {
     }
     getData()
 
-    const Debounce = setTimeout(() => {
-      const SearchedCards = SearchCard(searchTerm, formattedArray);
-      setTickets(SearchedCards)
+    // const Debounce = setTimeout(() => {
+    //   const SearchedCards = SearchCard(searchTerm, formattedArray);
+    //   setTickets(SearchedCards)
 
+    // }, 200);
+    // return () => {
+    //   clearTimeout(Debounce)
+    // };
+
+    const DebounceFilter = setTimeout(() => {
+      // const FilteredCards = FilterCard(filterTerm, formattedArray);
+      const SearchedCards = SearchCard(searchTerm, formattedArray);
+
+      // setTickets(FilteredCards)
+
+      setTickets(SearchedCards)
+      // document.getElementsByName("jeff").checked = false
     }, 200);
     return () => {
-      clearTimeout(Debounce)
-    };
+      clearTimeout(DebounceFilter)
+    }
 
-  }, [searchTerm])
+
+  }, [filterTerm, searchTerm])
+
+  useEffect(() => {
+    const DebounceFilter = setTimeout(() => {
+      // const FilteredCards = FilterCard(filterTerm, formattedArray);
+      const SearchedCards = SearchCard(searchTerm, formattedArray);
+
+      // setTickets(FilteredCards)
+
+      setTickets(SearchedCards)
+      // document.getElementsByName("jeff").checked = false
+    }, 200);
+    return () => {
+      clearTimeout(DebounceFilter)
+    }
+  }, [filterTerm, searchTerm])
 
 
   // useEffect(() => {
@@ -101,9 +156,33 @@ const Dashboard = () => {
             placeholder="Поиск по названию"
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+          <section className='filter'>
+            {tickets &&
+              uniqueCategories?.map((uniqueCategory, filterKey) => (
+                <div key={filterKey}>
+                  <input
+                    type="radio"
+                    id={uniqueCategory}
+                    value={uniqueCategory}
+                    name="jeff"
+                    onChange={(e) => setFilterTerm(e.target.value)}
+                  />
+                  <label htmlFor={uniqueCategory}>{uniqueCategory}</label>
+                </div>
+              ))}
+            <input
+              type="radio"
+              id="test3"
+              name="jeff"
+              value={""}
+              onChange={(e) => setFilterTerm(e.target.value)}
+            />
+            <label htmlFor="test3">no filter</label>
+          </section>
           {/* <select onChange={(e) => setSearchTerm(e.target.value)}>
               <option value={"Bug"}>Bug</option>
-            </select> */}
+              <option value={"skeleton"}>skeleton</option>
+        </select> */}
         </div>
         <div>
           <div className="preloader" id='preloader'>
@@ -124,6 +203,30 @@ const Dashboard = () => {
           placeholder="Поиск по названию"
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+        <section className='filter'>
+          {tickets &&
+            uniqueCategories?.map((uniqueCategory, filterKey) => (
+              <div key={filterKey}>
+                <input
+                  type="radio"
+                  id={uniqueCategory}
+                  value={uniqueCategory}
+                  name="jeff"
+                  filter={uniqueCategory}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <label htmlFor={uniqueCategory}>{uniqueCategory}</label>
+              </div>
+            ))}
+          <input
+            type="radio"
+            id="test3"
+            name="jeff"
+            value={""}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <label htmlFor="test3">no filter</label>
+        </section>
         {/* <select onChange={(e) => setSearchTerm(e.target.value)}>
               <option value={"Bug"}>Bug</option>
               <option value={"skeleton"}>skeleton</option>
@@ -143,6 +246,9 @@ const Dashboard = () => {
                     ticket={filteredTicket}
                     title={filteredTicket.title}
                     status={filteredTicket.status}
+                    category={filteredTicket.category}
+                    filter={filteredTicket.title}
+                  // uniqueCategory={filteredTicket.category}
                   />
                 ))}
             </div>

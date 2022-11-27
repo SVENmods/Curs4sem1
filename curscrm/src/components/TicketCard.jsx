@@ -9,6 +9,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 
 const TicketCard = ({ color, ticket, title }) => {
 
+
   const { user, isAuthenticated, isLoading } = useAuth0();
 
   return (
@@ -24,7 +25,7 @@ const TicketCard = ({ color, ticket, title }) => {
       </Link>
       {
         isAuthenticated && (
-          <DeleteBlock documentId={ticket.documentId} />
+          <DeleteBlock ticket={ticket} documentId={ticket.documentId} />
         )
       }
 
