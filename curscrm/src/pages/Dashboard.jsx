@@ -194,7 +194,7 @@ const Dashboard = () => {
           id="searchInp"
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <input type="button" value={"clear"} onClick={document.getElementById("searchInp").value = ""} />
+        {/* <input type="button" value={"clear"} onClick={document.getElementById("searchInp").value = ""} /> */}
         <section className='filter'>
           {tickets &&
             uniqueCategories?.map((uniqueCategory, filterKey) => (
