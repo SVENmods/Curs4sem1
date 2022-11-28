@@ -8,34 +8,24 @@ const SearchCard = (searchText, listOfCards) => {
   if (!searchText) {
     return listOfCards;
   }
-  let titles = listOfCards.filter(({ title }) =>
-    title.toLowerCase().includes(searchText.toLowerCase()))
 
-  // console.log(
-  //   titles
-  // )
-  return (
-    // listOfCards.filter(({ title }) =>
-    //   title.toLowerCase().includes(searchText.toLowerCase())
-    // )
+  if (
+    listOfCards.filter(({ title }) =>
+      title.toLowerCase().includes(searchText.toLowerCase())).length === 0) {
+    return (
 
-    // listOfCards.filter(obj => obj.name == filter.name && obj.address == filter.address)
-    // listOfCards.filter(({ textS }) => textS.toLowerCase().includes(searchText.toLowerCase()))
+      listOfCards.filter(({ category }) =>
+        category.toLowerCase().includes(searchText.toLowerCase()))
 
-    listOfCards.filter(({ title, category }) =>
-      title.toLowerCase().includes(searchText.toLowerCase())
-    )
-
-  );
-};
-
-const FilterCard = (filterText, listOfCards) => {
-  if (!filterText) {
-    return listOfCards;
+    );
   }
-  return listOfCards.filter(({ category }) =>
-    category.toLowerCase().includes(filterText.toLowerCase())
-  );
+  else {
+    return (
+      listOfCards.filter(({ title }) =>
+        title.toLowerCase().includes(searchText.toLowerCase()))
+    )
+  }
+
 };
 
 const Dashboard = () => {
@@ -165,7 +155,7 @@ const Dashboard = () => {
                     id={uniqueCategory}
                     value={uniqueCategory}
                     name="jeff"
-                    onChange={(e) => setFilterTerm(e.target.value)}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                   />
                   <label htmlFor={uniqueCategory}>{uniqueCategory}</label>
                 </div>
@@ -175,7 +165,7 @@ const Dashboard = () => {
               id="test3"
               name="jeff"
               value={""}
-              onChange={(e) => setFilterTerm(e.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <label htmlFor="test3">no filter</label>
           </section>
@@ -201,8 +191,10 @@ const Dashboard = () => {
           type="text"
           autoComplete="off"
           placeholder="Поиск по названию"
+          id="searchInp"
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+        <input type="button" value={"clear"} onClick={document.getElementById("searchInp").value = ""} />
         <section className='filter'>
           {tickets &&
             uniqueCategories?.map((uniqueCategory, filterKey) => (
