@@ -16,12 +16,14 @@ const TicketPage = ({ editMode }) => {
     count: 0,
     allRate: {},
   })
+  const [formCom, setComData] = useState("")
+
   // eslint-disable-next-line no-unused-vars
   const { categories, setCategories } = useContext(CategoriesContext)
 
-  const ratingObj = {
-    ids: {},
-  }
+  // const ratingObj = {
+  //   ids: {},
+  // }
 
   const navigate = useNavigate()
   let { id } = useParams()
@@ -36,6 +38,8 @@ const TicketPage = ({ editMode }) => {
   }
 
   const { user, isAuthenticated, isLoading } = useAuth0();
+
+
 
 
   const handleSubmit = async (e) => {
@@ -79,12 +83,12 @@ const TicketPage = ({ editMode }) => {
       // delete formData.allRate["0"]
       // formData.allRate["0"].del
       // let oldRate = formData.rate
-
+      let lengthR = Object.keys(formData.allRate).length;
       if (formData.allRate) {
-        let lengthR = Object.keys(formData.allRate).length;
         let newRate = {
           nameR: user.name,
-          rateR: Number(formData.rate)
+          rateR: Number(formData.rate),
+          comment: formData.comment,
         }
         // formData.allRate[lengthR++] = newRate
         for (let i = 0; lengthR >= i; i++) {
@@ -113,6 +117,8 @@ const TicketPage = ({ editMode }) => {
         }
         let x = 0
         formData.sumRate = Math.round(arrayRate.map(i => x += i, x = 0).reverse()[0] / lengthR)
+
+
       }
 
       const response = await axios.put(`http://localhost:8000/tickets/${id}`, {
@@ -142,37 +148,50 @@ const TicketPage = ({ editMode }) => {
         const response = await axios.get(`http://localhost:8000/tickets/${id}`)
         //     console.log('AAAAAA', response)
         setFormData(response.data.data)
+        const objRate = response.data.data.allRate
 
+        return objRate
       }
       fetchData();
-      console.log(editMode)
+
+      const fetchComment = async () => {
+        const response = await axios.get(`http://localhost:8000/tickets/${id}`)
+        //     console.log('AAAAAA', response)
+        // setFormData(response.data.data)
+        const arrayCom = []
+        const arrayNameCom = []
+        const objRate = response.data.data.allRate
+        let lengthCom = Object.keys(objRate).length
+        for (let i = 0; lengthCom >= i; i++) {
+
+          console.log(objRate[i])
+        }
+      }
+
+      fetchComment();
+      // console.log(formData.title)
+      // console.log(editMode)
+      // console.log(objRate)
+
     }
+    // console.log(formData.allRate)
+
+
     setTimeout(() => {
       setLoading(false)
     }, 500)
     // window.location.reload();
+    // for (let i = 0; Object.keys(formData.allRate).length >= i; i++) {
+    //   console.log(formData.allRate[i])
+    // }
+    console.log(Object.keys(formData.allRate).length)
 
   }, [editMode, id])
 
-  // if(formData.avatar == user.picture){
-  //   const chekAvatar = true
-  //   console.log(chekAvatar)
-  // }
-  // else{
-  //   const chekAvatar = false
-  //   console.log(chekAvatar)
-  // }
-  // const rating = {
-  //   ids: {
-  //     nameR: user.name,
-  //     rateR: formData.rate,
-  //   }
-  // }
-
-  // let allR = rating.ids.rateR / rating.ids
+  // console.log(formData)
 
 
-  console.log(isAuthenticated)
+  // console.log(isAuthenticated)
   return (
     isAuthenticated && (
       <div className="ticket">
@@ -442,6 +461,24 @@ const TicketPage = ({ editMode }) => {
                       checked={formData.rate == 5}
                     />
                     <label htmlFor="priorityR-5">5</label>
+                  </div>
+                  <div>
+                    <div>
+
+                      <label htmlFor="coment">Leave a comment</label>
+                      <FormInput
+                        id="comment"
+                        name="comment"
+                        type="text"
+                        onChange={handleChange}
+                        value={formData.comment}
+                      />
+                    </div>
+
+                    <div>
+                      <span>All comments</span>
+                      <div id='allcom'></div>
+                    </div>
                   </div>
                 </section>
               )
