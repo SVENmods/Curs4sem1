@@ -129,7 +129,7 @@ const Dashboard = () => {
     'rgb(186,255,201)',
     'rgb(186,225,255)',
   ]
-
+  console.log(tickets)
   const uniqueCategories = [
     ...new Set(tickets?.map(({ category }) => category)),
   ]
