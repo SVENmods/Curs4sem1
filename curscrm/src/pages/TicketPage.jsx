@@ -6,6 +6,7 @@ import CategoriesContext from '../Hooks/context'
 import FormInput from '../UI/FormInput'
 import { useAuth0 } from "@auth0/auth0-react"
 import { createElement } from 'react'
+import CommentDisplay from '../components/CommentDisplay'
 
 const TicketPage = ({ editMode }) => {
   const [loading, setLoading] = useState(false);
@@ -238,20 +239,21 @@ const TicketPage = ({ editMode }) => {
   // ]
 
   // console.log(formData)
-  useEffect(() => {
-    const abjArr = Object.entries(formCom);
 
-    abjArr.forEach(([key, value]) => {
-      // console.table(key, value);
-      console.log(value)
-      // const mainDiv = document.getElementById("allcom")
-      // const newDiv = document.createElement("div");
-      // mainDiv.appendChild(newDiv)
-      // const newContent = document.createTextNode(value.comment);
-      // newDiv.appendChild(newContent);
-      setMainName(value.name)
-    });
-  }, [])
+  // useEffect(() => {
+  //   const abjArr = Object.entries(formCom);
+
+  //   abjArr.forEach(([key, value]) => {
+  //     // console.table(key, value);
+  //     console.log(value)
+  //     // const mainDiv = document.getElementById("allcom")
+  //     // const newDiv = document.createElement("div");
+  //     // mainDiv.appendChild(newDiv)
+  //     // const newContent = document.createTextNode(value.comment);
+  //     // newDiv.appendChild(newContent);
+  //     setMainName(value.name)
+  //   });
+  // }, [])
 
 
 
@@ -567,6 +569,7 @@ const TicketPage = ({ editMode }) => {
                             </input>
                           )
                         } */}
+                        <CommentDisplay />
                       </div>
                     </div>
                   </div>
