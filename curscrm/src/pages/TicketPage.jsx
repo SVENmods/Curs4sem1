@@ -5,8 +5,7 @@ import axios from 'axios'
 import CategoriesContext from '../Hooks/context'
 import FormInput from '../UI/FormInput'
 import { useAuth0 } from "@auth0/auth0-react"
-import { createElement } from 'react'
-import CommentDisplay from '../components/CommentDisplay'
+
 
 const TicketPage = ({ editMode }) => {
   const [loading, setLoading] = useState(false);
@@ -16,12 +15,9 @@ const TicketPage = ({ editMode }) => {
     timestamp: new Date().toISOString(),
     editMode: false,
     count: 0,
-    allRate: {},
+    allRate: [],
   })
-  const [formCom, setComData] = useState({})
 
-  const [mainCom, setMainCom] = useState([])
-  const [mainName, setMainName] = useState([])
   // eslint-disable-next-line no-unused-vars
   const { categories, setCategories } = useContext(CategoriesContext)
 
@@ -49,72 +45,27 @@ const TicketPage = ({ editMode }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (editMode) {
-      // if (ratingObj.ids) {
-      //   ratingObj.ids++
-      // }
-      // ratingObj.ids = {
-      //   nameR: user.name,
-      //   rateR: formData.rate
-      // }
-      // formData.allRate++
-      // formData.allRate.ids = 0
-      // formData.allRate.[ids] = formData.allRate.ids + 1
-      // for (let i = 0; formData.allRate.length; i++) {
-      //   if (formData.allRate.length == 0) {
+      // formData.allRate = []
+      let lengthR = formData.allRate.length;
 
-      //   }
-
-      // }
-      // let rateMap = new Map()
-      // rateMap.set(1, {
-      //   nameR: user.name,
-      //   rateR: formData.rate
-      // })
-      // formData.allRate = new Map()
-      // formData.allRate.set(1, {
-      //   nameR: user.name,
-      //   rateR: formData.rate
-      // })
-      // formData.allRate = new Map()
-      // formData.allRate.set(1, {
-      //   nameR: user.name,
-      //   rateR: formData.rate
-      // })
-      // const map = new Map()
-      // map.set('firstName', 'Luke')
-      // formData.allRate.ids = map.set('firstName', 'Luke')
-      // formData.allRate = {}
-      // delete formData.allRate["0"]
-      // formData.allRate["0"].del
-      // let oldRate = formData.rate
-      let lengthR = Object.keys(formData.allRate).length;
       if (formData.allRate) {
+
         let newRate = {
           nameR: user.name,
           rateR: Number(formData.rate),
           comment: formData.comment,
         }
-        // formData.allRate[lengthR++] = newRate
+
         for (let i = 0; lengthR >= i; i++) {
           if (lengthR == i) {
-            formData.allRate[i] = newRate
+            formData.allRate.push(newRate)
           }
-          // else formData.allRate[i] = newRate
 
-          // else formData.allRate[i] = newRate
         }
 
-        // let sum = 0;
-
-        // for (let i = 0; lengthR >= i; i++) {
-
-        //   for (let rateS of Object.values(formData.allRate[i].rateR)) {
-        //     sum += rateS;
-        //   }
 
 
-        // }
-        // formData.sumRate = sum
+
         let arrayRate = []
         for (let i = 0; lengthR >= i; i++) {
           arrayRate.push(formData.allRate[i].rateR)
@@ -122,7 +73,9 @@ const TicketPage = ({ editMode }) => {
         let x = 0
         formData.sumRate = Math.round(arrayRate.map(i => x += i, x = 0).reverse()[0] / lengthR)
 
-
+        // for (let i = 0; lengthR >= i; i++) {
+        //   // console.log("formData.allRate" + [i], formData.allRate[i])
+        // }
       }
 
       const response = await axios.put(`http://localhost:8000/tickets/${id}`, {
@@ -158,118 +111,17 @@ const TicketPage = ({ editMode }) => {
       }
       fetchData();
 
-
-      // console.log(formData.title)
-      // console.log(editMode)
-      // console.log(objRate)
-
     }
-    // console.log(formData.allRate)
-
-    // console.log("arrayCom", arrayCom)
-
-    // for (let i = 0; arrayCom.length >= i; i++) {
-
-    //   console.log(arrayCom)
-    //   // createElement(
-    //   //   'h1',
-    //   //   { className: 'greeting' },
-    //   //   'Hello ',
-    //   //   createElement('i', null, arrayCom[i]),
-    //   //   '. Welcome!'
-    //   // )
-    // }
-
-    console.log("allcomObj", formCom)
 
 
     setTimeout(() => {
       setLoading(false)
     }, 500)
-    // window.location.reload();
-    // for (let i = 0; Object.keys(formData.allRate).length >= i; i++) {
-    //   console.log(formData.allRate[i])
-    // }
-    console.log(Object.keys(formData.allRate).length)
+
 
   }, [editMode, id])
 
-  useEffect(() => {
-    const fetchComment = async () => {
-      const response = await axios.get(`http://localhost:8000/tickets/${id}`)
-      //     console.log('AAAAAA', response)
-      // setFormData(response.data.data)
-      const arrayNameCom = []
-      const objRate = response.data.data.allRate
-      setComData(objRate)
-      let lengthCom = Object.keys(objRate).length
-      for (let i = 0; lengthCom >= i; i++) {
 
-        // console.log(objRate[i])
-        arrayCom.push(objRate[i])
-        // createElement(
-        //   'h1',
-        //   { className: 'greeting' },
-        //   'Hello ',
-        //   createElement('i', null, arrayCom[i]),
-        //   '. Welcome!'
-        // )
-      }
-    }
-
-    fetchComment();
-    const showComment = async () => {
-      for (let i = 0; Object.keys(formCom).length > i; i++) {
-        const mainDiv = document.getElementById("allcom")
-        const newDiv = document.createElement("div");
-        mainDiv.appendChild(newDiv)
-        const newContent = document.createTextNode(formCom[i].nameR);
-        newDiv.appendChild(newContent);
-      }
-    }
-    // showComment()
-  }, [id])
-
-  console.log("allcomObj", Object.entries(Object.values(formCom)))
-  // for(let i = 0; Object.keys(formCom).length >= i; i++){
-  // }
-
-  // const uniqueCom = [
-  //   ...new Set(formCom?.map(({ category }) => category)),
-  // ]
-
-  // console.log(formData)
-
-  // useEffect(() => {
-  //   const abjArr = Object.entries(formCom);
-
-  //   abjArr.forEach(([key, value]) => {
-  //     // console.table(key, value);
-  //     console.log(value)
-  //     // const mainDiv = document.getElementById("allcom")
-  //     // const newDiv = document.createElement("div");
-  //     // mainDiv.appendChild(newDiv)
-  //     // const newContent = document.createTextNode(value.comment);
-  //     // newDiv.appendChild(newContent);
-  //     setMainName(value.name)
-  //   });
-  // }, [])
-
-
-
-  // useEffect(() => {
-  //   for (let i = 0; Object.keys(formCom).length > i; i++) {
-
-  //     console.log("com el", formCom[i])
-  //     // const mainDiv = document.getElementById("allcom")
-  //     // const newDiv = document.createElement("div");
-  //     // mainDiv.appendChild(newDiv)
-  //     // const newContent = document.createTextNode(formCom[i].nameR);
-  //     // newDiv.appendChild(newContent);
-  //   }
-  // }, [formCom])
-
-  // console.log(isAuthenticated)
   return (
     isAuthenticated && (
       <div className="ticket">
@@ -556,20 +408,9 @@ const TicketPage = ({ editMode }) => {
                     <div>
                       <span>All comments</span>
                       <div id='allcom'>
-                        {/* {Object.keys(formCom).map(comment => (
-                          <div key={comment} className="card-panel">
-                            {formCom[comment]}
-                          </div>
-                        ))} */}
-                        {/* {
-                          formCom && (
-                            <input
-                              value={formCom[1].nameR}>
-
-                            </input>
-                          )
-                        } */}
-                        <CommentDisplay />
+                        {formData.allRate.map(function (d, idx) {
+                          return (<li key={idx}>{d.nameR} - {d.comment} - {d.rateR}</li>)
+                        })}
                       </div>
                     </div>
                   </div>

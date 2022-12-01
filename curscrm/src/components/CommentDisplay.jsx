@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios';
 
 const CommentDisplay = () => {
-     const [formCom, setComData] = useState({})
+     const [formCom, setComData] = useState([])
      let { id } = useParams()
 
      useEffect(() => {
@@ -14,9 +14,8 @@ const CommentDisplay = () => {
                // setFormData(response.data.data)
                const arrayNameCom = []
                const objRate = response.data.data.allRate
-               setComData(objRate)
                let lengthCom = Object.keys(objRate).length
-               for (let i = 0; lengthCom >= i; i++) {
+               for (let i = 0; lengthCom > i; i++) {
 
                     // console.log(objRate[i])
                     // arrayCom.push(objRate[i])
@@ -28,8 +27,16 @@ const CommentDisplay = () => {
                     //   '. Welcome!'
                     // )
 
-                    Object.keys(objRate).map(key => <div key={key}>{objRate[key]}</div>)
+                    // Object.keys(objRate).map(key => <div key={key}>{objRate[key]}</div>)
+                    formCom.push(objRate[i])
+
                }
+               // console.log("arrayNameCom", arrayNameCom)
+               // setComData(objRate)
+
+               // for (let i = 0; formCom.length > i; i++) {
+               //      console.log(formCom[i])
+               // }
 
 
           }
@@ -44,16 +51,48 @@ const CommentDisplay = () => {
                     newDiv.appendChild(newContent);
                }
           }
+
           // showComment()
+          // console.log("formCom", formCom)
+          // formCom.map(({ key, value }) => ({ [key]: value }));
      }, [id])
+     // console.log("formCom", formCom)
 
 
 
-     return (
-          <div>
 
-          </div>
-     );
+     // formCom.map(el => {
+     //      return (
+     //           <span className='btn-answer'>{el}</span>
+     //      )
+     // })
+
+
+     // map((comment) => {
+     //      return (
+     //           <span className='btn-answer'>{comment.comment}</span>
+     //      )
+     // });
+     const allArray = []
+     for (let i = 0; formCom.length > i; i++) {
+          console.log(formCom[i])
+          // formCom[i].map((anObjectMapped, index) => {
+          //      return (
+          //           <p key={`${anObjectMapped.nameR}_{anObjectMapped.comment}`}>
+          //                {anObjectMapped.nameR} - {anObjectMapped.comment}
+          //           </p>
+          //      );
+          // })
+          // // allArray.push(...formCom[i])
+          // f[i] = {
+          //      name: formCom[i].nameR,
+          //      comment: formCom[i].comment,
+          //      rate: formCom[i].rate
+          // };
+     }
+     console.log(formCom)
+
+
 }
 
 export default CommentDisplay;
