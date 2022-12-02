@@ -123,11 +123,11 @@ const Dashboard = () => {
 
 
   const colors = [
-    'rgb(255,179,186)',
-    'rgb(255,223,186)',
-    'rgb(255,255,186)',
-    'rgb(186,255,201)',
-    'rgb(186,225,255)',
+    '#6046FF',
+    '#806CFB',
+    '#FF3B51',
+    '#FFD055',
+    '#20B038',
   ]
   console.log(tickets)
   const uniqueCategories = [
@@ -137,7 +137,7 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="dashboard">
-        <h1>My Projects</h1>
+        <h1>We Done</h1>
         <div>
           <input
             autoFocus
@@ -146,10 +146,10 @@ const Dashboard = () => {
             placeholder="Поиск по названию"
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <section className='filter'>
+          <section className='filter d-flex flex-row'>
             {tickets &&
               uniqueCategories?.map((uniqueCategory, filterKey) => (
-                <div key={filterKey}>
+                <div key={filterKey} className='me-3'>
                   <input
                     type="radio"
                     id={uniqueCategory}
@@ -184,7 +184,7 @@ const Dashboard = () => {
   }
   return (
     <div className="dashboard">
-      <h1>My Projects</h1>
+      <h1>We Done</h1>
       <div>
         <input
           autoFocus
@@ -195,7 +195,7 @@ const Dashboard = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         {/* <input type="button" value={"clear"} onClick={document.getElementById("searchInp").value = ""} /> */}
-        <section className='filter'>
+        <section className='filter d-flex flex-row'>
           {tickets &&
             uniqueCategories?.map((uniqueCategory, filterKey) => (
               <div key={filterKey}>
@@ -207,7 +207,7 @@ const Dashboard = () => {
                   filter={uniqueCategory}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <label htmlFor={uniqueCategory}>{uniqueCategory}</label>
+                <label htmlFor={uniqueCategory} className='me-2'>{uniqueCategory}</label>
               </div>
             ))}
           <input
@@ -228,7 +228,7 @@ const Dashboard = () => {
         {tickets &&
           uniqueCategories?.map((uniqueCategory, categoryIndex) => (
             <div key={categoryIndex}>
-              <h3>{uniqueCategory}</h3>
+              <h3 className="category">{uniqueCategory}</h3>
               {tickets
                 .filter((ticket) => ticket.category === uniqueCategory)
                 .map((filteredTicket, _index) => (

@@ -17,6 +17,7 @@ const TicketPage = ({ editMode }) => {
     count: 0,
     allRate: [],
   })
+  const [orderState, setOrderState] = useState(false);
 
   // eslint-disable-next-line no-unused-vars
   const { categories, setCategories } = useContext(CategoriesContext)
@@ -77,7 +78,10 @@ const TicketPage = ({ editMode }) => {
         //   // console.log("formData.allRate" + [i], formData.allRate[i])
         // }
       }
-
+      if (orderState) {
+        console.log("ordered", true)
+        formData.order = true
+      }
       const response = await axios.put(`http://localhost:8000/tickets/${id}`, {
         data: formData,
       })
@@ -417,7 +421,34 @@ const TicketPage = ({ editMode }) => {
                 </section>
               )
             }
+            {
+              editMode && formData.owner != user.name && (
+                <section>
+                  <div>
 
+                    {/* <label htmlFor="coment">Оформить заказ</label> */}
+                    {/* <FormInput
+                      id="order"
+                      name="order"
+                      type="button"
+                      onChange={madeAl()}
+                      value={"Make an order"}
+                    // onClick={}
+                    /> */}
+                    <button
+                      type='button'
+                      onClick={function () {
+                        console.log(orderState)
+                        setOrderState(true)
+                        console.log(orderState)
+                      }}
+                    >
+                      Make an order
+                    </button>
+                  </div>
+                </section>
+              )
+            }
           </form>
         </div>
       </div>
