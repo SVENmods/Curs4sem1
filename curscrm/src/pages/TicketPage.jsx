@@ -16,12 +16,7 @@ const TicketPage = ({ editMode }) => {
     editMode: false,
     count: 0,
     allRate: [],
-    allOrder: [
-      {
-        nameR: null,
-        order: false,
-      }
-    ],
+    allOrder: [],
   })
   const [orderState, setOrderState] = useState(false);
   const { user, isAuthenticated, isLoading } = useAuth0();
