@@ -16,9 +16,17 @@ const TicketPage = ({ editMode }) => {
     editMode: false,
     count: 0,
     allRate: [],
-    allOrder: [],
+    allOrder: [
+      {
+        nameR: null,
+        order: false,
+      }
+    ],
   })
   const [orderState, setOrderState] = useState(false);
+  const { user, isAuthenticated, isLoading } = useAuth0();
+
+
 
   // eslint-disable-next-line no-unused-vars
   const { categories, setCategories } = useContext(CategoriesContext)
@@ -39,7 +47,6 @@ const TicketPage = ({ editMode }) => {
     }))
   }
 
-  const { user, isAuthenticated, isLoading } = useAuth0();
 
 
 
@@ -52,7 +59,7 @@ const TicketPage = ({ editMode }) => {
 
         let newOrder = {
           nameR: user.name,
-          order: formData.order = true,
+          order: formData.order = "true",
         }
 
         for (let i = 0; lengthR >= i; i++) {
@@ -116,6 +123,8 @@ const TicketPage = ({ editMode }) => {
     }
   }
 
+  const [orderFlag, setOrderFlag] = useState();
+
   const arrayCom = []
   useEffect(() => {
     setLoading(true)
@@ -125,10 +134,24 @@ const TicketPage = ({ editMode }) => {
         //     console.log('AAAAAA', response)
         setFormData(response.data.data)
         const objRate = response.data.data.allRate
-
+        const objOrder = response.data.data
+        // console.log(response.data.data.allOrder.find(el => el.nameR === user.name))
+        console.log(objOrder)
+        setOrderFlag(objOrder)
         return objRate
+
       }
       fetchData();
+
+      // if (orderName === user.name) {
+      //   setOrderFlag(true)
+      //   console.log(orderFlag)
+      // }
+      // else {
+      //   setOrderFlag(false)
+      //   console.log(orderFlag)
+      // }
+
 
     }
 
@@ -141,6 +164,13 @@ const TicketPage = ({ editMode }) => {
   }, [editMode, id])
 
 
+  // if (formData.allOrder.find(el => el.nameR === user.name)) {
+  //   console.log("have order")
+  //   document.getElementById('orderBtn').style.display = "none"
+  // }
+  // else {
+  //   console.log("dont have")
+  // }
   return (
     isAuthenticated && (
       <div className="ticket">
@@ -385,8 +415,32 @@ const TicketPage = ({ editMode }) => {
               )
             }
             {
-              // && formData.allOrder?.some(allOrder => allOrder?.nameR != user.name)
-              editMode && formData.owner != user.name && formData.progress != 100 && (
+              // .filter(el => el.nameR !== user.name)
+
+              <div>
+                {formData.allOrder.map(function (d, idx) {
+                  return (<li key={idx}>{d.nameR} - {d.order}</li>)
+                })}
+              </div>
+
+            }
+            {
+              // && formData.progress != 100
+              // formData.owner != user.name && formData.progress != 100 &&
+              // formData.allRate.filter(el => el.nameR == user.name)
+              editMode
+              && formData.owner != user.name
+              && formData.progress != 100
+              && formData.allOrder.find((el) => {
+                if (el.nameR === user.name) {
+                  console.log("yest zakaz")
+                  return false
+                }
+                else {
+                  console.log("net zakaza")
+                  return true
+                }
+              }) && (
                 <section>
                   <div>
 
@@ -399,11 +453,21 @@ const TicketPage = ({ editMode }) => {
                       value={"Make an order"}
                     // onClick={}
                     /> */}
+                    {/* {
+                      formData.allOrder.find(el => el.nameR === user.name) && (
+                        <span>заказ офорлен</span>
+                      )
+                    } */}
                     <button
+                      id='orderBtn'
                       type='button'
+
                       onClick={function () {
                         setOrderState(true)
                         formData.order = true
+                        if (formData.allOrder.find(el => el.nameR === user.name)) {
+                          document.getElementById('orderBtn').style.display = "none"
+                        }
                       }}
                     >
                       Make an order
