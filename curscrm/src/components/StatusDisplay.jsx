@@ -10,7 +10,7 @@ const StatusDisplay = ({ status }) => {
                     color = '#FFD055'
                     break
                case 'stuck':
-                    color = '#FF3B51'
+                    color = '#ff1a35'
                     break
                default:
                     color = '#806CFB'
@@ -20,7 +20,7 @@ const StatusDisplay = ({ status }) => {
      }
 
      return (
-          <div className="status-display" style={{ backgroundColor: getColor(status) }}>
+          <div className="status-display" style={{ color: getColor(status) }}>
                {status}
           </div>
      );

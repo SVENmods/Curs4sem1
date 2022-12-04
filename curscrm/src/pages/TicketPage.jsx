@@ -16,6 +16,7 @@ const TicketPage = ({ editMode }) => {
     editMode: false,
     count: 0,
     allRate: [],
+    allOrder: [],
   })
   const [orderState, setOrderState] = useState(false);
 
@@ -42,46 +43,58 @@ const TicketPage = ({ editMode }) => {
 
 
 
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (editMode) {
       // formData.allRate = []
-      let lengthR = formData.allRate.length;
+      if (orderState == true) {
+        let lengthR = formData.allRate.length;
 
-      if (formData.allRate) {
-
-        let newRate = {
+        let newOrder = {
           nameR: user.name,
-          rateR: Number(formData.rate),
-          comment: formData.comment,
+          order: formData.order = true,
         }
 
         for (let i = 0; lengthR >= i; i++) {
           if (lengthR == i) {
-            formData.allRate.push(newRate)
+            formData.allOrder.push(newOrder)
           }
 
         }
+      }
 
+      if (formData.allRate && user.name != formData.owner) {
+        let lengthR = formData.allRate.length;
 
+        if (formData.rate != null) {
+          let newRate = {
+            nameR: user.name,
+            rateR: Number(formData.rate),
+            comment: formData.comment,
+          }
+          for (let i = 0; lengthR >= i; i++) {
+            if (lengthR == i) {
+              formData.allRate.push(newRate)
+            }
 
-
-        let arrayRate = []
-        for (let i = 0; lengthR >= i; i++) {
-          arrayRate.push(formData.allRate[i].rateR)
+          }
+          let arrayRate = []
+          for (let i = 0; lengthR >= i; i++) {
+            arrayRate.push(formData.allRate[i].rateR)
+          }
+          let x = 0
+          formData.sumRate = Math.round(arrayRate.map(i => x += i, x = 0).reverse()[0] / lengthR)
         }
-        let x = 0
-        formData.sumRate = Math.round(arrayRate.map(i => x += i, x = 0).reverse()[0] / lengthR)
 
-        // for (let i = 0; lengthR >= i; i++) {
-        //   // console.log("formData.allRate" + [i], formData.allRate[i])
-        // }
+
+
+
+
+
+
+
       }
-      if (orderState) {
-        console.log("ordered", true)
-        formData.order = true
-      }
+
       const response = await axios.put(`http://localhost:8000/tickets/${id}`, {
         data: formData,
       })
@@ -90,10 +103,11 @@ const TicketPage = ({ editMode }) => {
         navigate('/')
       }
     }
+
     if (!editMode) {
       console.log('posting')
       const response = await axios.post('http://localhost:8000/tickets', {
-        formData,
+        formData
       })
       const success = response.status === 200
       if (success) {
@@ -101,6 +115,7 @@ const TicketPage = ({ editMode }) => {
       }
     }
   }
+
   const arrayCom = []
   useEffect(() => {
     setLoading(true)
@@ -186,59 +201,7 @@ const TicketPage = ({ editMode }) => {
                 disabled={formData.owner != user.name && editMode}
               />
 
-              <label>Priority</label>
-              <div className="multiple-input-container">
-                <FormInput
-                  id="priority-1"
-                  name="priority"
-                  type="radio"
-                  onChange={handleChange}
-                  value={1}
-                  checked={formData.priority == 1}
-                  disabled={formData.owner != user.name && editMode}
-                />
-                <label htmlFor="priority-1">1</label>
-                <FormInput
-                  id="priority-2"
-                  name="priority"
-                  type="radio"
-                  onChange={handleChange}
-                  value={2}
-                  checked={formData.priority == 2}
-                  disabled={formData.owner != user.name && editMode}
-                />
-                <label htmlFor="priority-2">2</label>
-                <FormInput
-                  id="priority-3"
-                  name="priority"
-                  type="radio"
-                  onChange={handleChange}
-                  value={3}
-                  checked={formData.priority == 3}
-                  disabled={formData.owner != user.name && editMode}
-                />
-                <label htmlFor="priority-3">3</label>
-                <FormInput
-                  id="priority-4"
-                  name="priority"
-                  type="radio"
-                  onChange={handleChange}
-                  value={4}
-                  checked={formData.priority == 4}
-                  disabled={formData.owner != user.name && editMode}
-                />
-                <label htmlFor="priority-4">4</label>
-                <FormInput
-                  id="priority-5"
-                  name="priority"
-                  type="radio"
-                  onChange={handleChange}
-                  value={5}
-                  checked={formData.priority == 5}
-                  disabled={formData.owner != user.name && editMode}
-                />
-                <label htmlFor="priority-5">5</label>
-              </div>
+
 
               {editMode && (
                 <>
@@ -422,7 +385,8 @@ const TicketPage = ({ editMode }) => {
               )
             }
             {
-              editMode && formData.owner != user.name && (
+              // && formData.allOrder?.some(allOrder => allOrder?.nameR != user.name)
+              editMode && formData.owner != user.name && formData.progress != 100 && (
                 <section>
                   <div>
 
@@ -438,9 +402,8 @@ const TicketPage = ({ editMode }) => {
                     <button
                       type='button'
                       onClick={function () {
-                        console.log(orderState)
                         setOrderState(true)
-                        console.log(orderState)
+                        formData.order = true
                       }}
                     >
                       Make an order

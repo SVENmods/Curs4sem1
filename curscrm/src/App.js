@@ -6,6 +6,7 @@ import Nav from "./components/Nav";
 import CategoriesContext from "./Hooks/context";
 import Profile from "./pages/Profile";
 import Graph from "./pages/Graph";
+import Header from "./components/Header";
 
 function App() {
   const [categories, setCategories] = useState(null);
@@ -16,6 +17,8 @@ function App() {
       <CategoriesContext.Provider value={value}>
         <BrowserRouter>
           <Nav />
+          <div className="content">
+          <Header/>
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/ticket" element={<TicketPage />} />
@@ -26,6 +29,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/statistics" element={<Graph />} />
           </Routes>
+          </div>
         </BrowserRouter>
       </CategoriesContext.Provider>
     </div>

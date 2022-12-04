@@ -1,6 +1,6 @@
 const PriorityDisplay = ({ rate }) => {
      return (
-          <div className="priority-display">
+          <div className="priority-display mt-1">
                <div className="star-container">
                     <h3 style={{
                          color: rate >= 1

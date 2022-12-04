@@ -2,31 +2,31 @@ const PriorityDisplay = ({ priority }) => {
      return (
           <div className="priority-display">
                <div className="star-container">
-                    <h3 style={{
+                    <span style={{
                          color: priority >= 1
-                              ? '#FFD055'
+                              ? '#FFD055 !important'
                               : ''
-                    }}>★</h3>
-                    <h3 style={{
+                    }}>★</span>
+                    <span style={{
                          color: priority >= 2
-                              ? '#FFD055'
+                              ? '#FFD055 !important'
                               : ''
-                    }}>★</h3>
-                    <h3 style={{
+                    }}>★</span>
+                    <span style={{
                          color: priority >= 3
-                              ? '#FFD055'
+                              ? '#FFD055 !important'
                               : ''
-                    }}>★</h3>
-                    <h3 style={{
+                    }}>★</span>
+                    <span style={{
                          color: priority >= 4
-                              ? '#FFD055'
+                              ? '#FFD055 !important'
                               : ''
-                    }}>★</h3>
-                    <h3 style={{
+                    }}>★</span>
+                    <span style={{
                          color: priority >= 5
-                              ? '#FFD055'
+                              ? '#FFD055 !important'
                               : ''
-                    }}>★</h3>
+                    }}>★</span>
                </div>
           </div>
      );

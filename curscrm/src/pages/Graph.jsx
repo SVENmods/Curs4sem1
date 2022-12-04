@@ -6,89 +6,90 @@ import axios from 'axios';
 const Graph = () => {
      const [tickets, setTickets] = useState()
      useEffect(() => {
-          async function getData(){
+          async function getData() {
                const response = await axios.get('http://localhost:8000/tickets')
-          const dataObject = response.data.data
-          const arrayOfKeys = Object.keys(dataObject)
-          const arrayOfData = Object.keys(dataObject).map((key) => dataObject[key])
-          const formattedArray = []
-          arrayOfKeys.forEach((key, index) => {
-               const formmatedData = { ...arrayOfData[index] }
-               formmatedData['documentId'] = key
-               formattedArray.push(formmatedData)
-          })
-          // console.log(formattedArray)
-          setTickets(formattedArray)
+               const dataObject = response.data.data
+               const arrayOfKeys = Object.keys(dataObject)
+               const arrayOfData = Object.keys(dataObject).map((key) => dataObject[key])
+               const formattedArray = []
+               arrayOfKeys.forEach((key, index) => {
+                    const formmatedData = { ...arrayOfData[index] }
+                    formmatedData['documentId'] = key
+                    formattedArray.push(formmatedData)
+               })
+               // console.log(formattedArray)
+               setTickets(formattedArray)
 
-          const dataPriority = []
+               const dataPriority = []
 
-          const dataProgress = []
+               const dataProgress = []
 
-          for(let i=0; i< formattedArray.length; i++){
-               dataPriority.push(
-                    {
-                         title : formattedArray[i].title, priority: formattedArray[i].priority
-                    }
-               )
-               // console.log(formattedArray[i].priority)
-               // console.log(dataPriority)
-          }
-
-          for(let i=0; i< formattedArray.length; i++){
-               dataProgress.push(
-                    {
-                         title : formattedArray[i].title, progress: formattedArray[i].progress
-                    }
-               )
-               // console.log(formattedArray[i].priority)
-               console.log(dataProgress)
-          }
-
-          async function createChartPriority(){
-               new Chart(
-                    document.getElementById('myChartPriority'),
-                    {
-                         type: 'doughnut',
-                         data: {
-                              labels: dataPriority.map(row => row.title),
-                              datasets: [
-                                   {
-                                   label: 'Priority',
-                                   data: dataPriority.map(row => row.priority)
-                                   }
-                              ]
+               for (let i = 0; i < formattedArray.length; i++) {
+                    dataPriority.push(
+                         {
+                              title: formattedArray[i].title, priority: formattedArray[i].priority
                          }
-                    }
-               );
-          }
+                    )
+                    // console.log(formattedArray[i].priority)
+                    // console.log(dataPriority)
+               }
 
-          async function createPolar(){
-               new Chart(
-                    document.getElementById('myChartPolar'),
-                    {
-                         type: 'polarArea',
-                         data: {
-                              labels: dataProgress.map(row => row.title),
-                              datasets: [
-                                   {
-                                   label: 'Progress',
-                                   data: dataProgress.map(row => row.progress)
-                                   }
-                              ]
+               for (let i = 0; i < formattedArray.length; i++) {
+                    dataProgress.push(
+                         {
+                              title: formattedArray[i].title, progress: formattedArray[i].progress
                          }
-                    }
-               );
+                    )
+                    // console.log(formattedArray[i].priority)
+                    console.log(dataProgress)
+               }
+
+               async function createChartPriority() {
+                    new Chart(
+                         document.getElementById('myChartPriority'),
+                         {
+                              type: 'doughnut',
+                              data: {
+                                   labels: dataPriority.map(row => row.title),
+                                   datasets: [
+                                        {
+                                             label: 'Priority',
+                                             data: dataPriority.map(row => row.priority)
+                                        }
+                                   ]
+                              }
+                         }
+                    );
+               }
+
+               async function createPolar() {
+                    new Chart(
+                         document.getElementById('myChartPolar'),
+                         {
+                              type: 'polarArea',
+                              data: {
+                                   labels: dataProgress.map(row => row.title),
+                                   datasets: [
+                                        {
+                                             label: 'Progress',
+                                             data: dataProgress.map(row => row.progress)
+                                        }
+                                   ]
+                              }
+                         }
+                    );
+               }
+
+               createChartPriority();
+               createPolar();
+
           }
 
-          createChartPriority();
-          createPolar();
 
-          }
 
-          
-          
-          
-          getData()}, [])
+
+          getData()
+     }, [])
 
      // useEffect(() => {
      //      const data = [
@@ -122,7 +123,7 @@ const Graph = () => {
 
 
      return (
-          <div>
+          <div className='charts'>
                <canvas id="myChartPriority"></canvas>
                <canvas id="myChartPolar"></canvas>
           </div>

@@ -72,122 +72,176 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /*--------------------*/
+html,
+body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
 .App {
   display: flex;
+  font-family: "Gotham Pro", sans-serif;
+  min-width: 320px;
+  width: 100%;
 }
 
 nav {
   display: flex;
   flex-direction: column;
   font-size: 30px;
+  min-height: 100vh;
   height: 100vh;
-  background-color: rgb(43, 43, 63);
-  color: rgb(255, 255, 255);
+  width: 70px;
+  background: #FFFFFF;
+  box-shadow: 2px 4px 20px rgba(0, 0, 0, 0.15);
+  border-bottom-right-radius: 20px;
   text-align: center;
+  align-items: center;
   justify-content: space-between;
+  -webkit-animation-duration: 3s;
+          animation-duration: 3s;
+  -webkit-animation-name: slidein;
+          animation-name: slidein;
+  padding: 20px 0 10px 0;
+  transition: width ease-in-out 0.5s;
   font-size: 16px;
 }
 nav .controls-containerm, nav .logo-container {
-  padding: 40px 25px;
   display: flex;
   flex-direction: column;
 }
 nav .logo-container img {
-  width: 20px;
+  width: 30px;
 }
 nav .controls-container .icons {
-  color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+nav .icons:hover svg path, nav .icons:hover svg circle {
+  transition: all ease-in 0.2s;
+}
+nav .icons:hover svg path {
+  stroke: #806CFB;
+}
+nav .icons:hover svg circle {
+  stroke: #806CFB;
+}
+
+nav:hover {
+  width: 100px;
 }
 
 .dashboard {
   padding: 30px;
   width: 100%;
 }
-.dashboard .ticket-container {
-  height: 80vh;
-}
-
-.ticket-card {
-  display: flex;
+.ticket-wrapper {
   width: 100%;
-}
-.ticket-card #link {
-  display: flex;
-  width: 100%;
-}
-.ticket-card #link > * {
-  background-color: #cfcfcf;
+  margin-bottom: 5px;
   box-shadow: 3px 6px 41px rgba(5, 3, 13, 0.05);
-  margin: 2px;
-  padding: 30px;
-  width: 100%;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  background: linear-gradient(59.04deg, #57cfd1 6%, #51a7f3 91%);
+  border-radius: 15px;
+}
+.ticket-wrapper .ticket-card-header {
   display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.ticket-wrapper .ticket-card-header__name {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  max-width: 140px;
+}
+.ticket-wrapper .ticket-card-header .go-to {
+  opacity: 1;
+  border: 1.7px solid #FFFFFF;
+  border-radius: 10px;
+  width: 31px;
+  height: 31px;
+  min-width: 31px;
+  min-height: 31px;
+  transition: all ease-in 0.3s;
+}
+.ticket-wrapper .ticket-card-header .go-to:hover {
+  border: 2px solid #806CFB;
+}
+.ticket-wrapper .ticket-card-header .go-to svg path {
+  transition: all ease-in 0.3s;
+}
+.ticket-wrapper .ticket-card-header .go-to:hover svg path {
+  fill: #806CFB;
+}
+.ticket-wrapper #link h3 {
+  margin: 0;
+}
+.ticket-wrapper #link > * {
+  background: transparent;
   align-items: center;
 }
-.ticket-card #link {
+.ticket-wrapper #link {
   text-decoration: none;
   color: rgb(46, 46, 46);
 }
-.ticket-card .ticket-color {
-  width: 15px !important;
+.ticket-wrapper .ticket-color {
   padding: 10px !important;
-  margin: 2px;
+  width: 100%;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
 }
-.ticket-card .avatar-container {
+.ticket-wrapper .avatar-container {
   display: flex;
   justify-content: center;
-  width: 80px;
 }
-.ticket-card .avatar-container .img-container {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+.ticket-wrapper .avatar-container .img-container {
+  width: 41px;
+  height: 41px;
+  border-radius: 13px;
   overflow: hidden;
 }
-.ticket-card .avatar-container .img-container img {
+.ticket-wrapper .avatar-container .img-container img {
   width: 100%;
 }
-.ticket-card .status-display {
+.ticket-wrapper .priority-display {
   display: flex;
   justify-content: center;
 }
-.ticket-card .priority-display {
-  display: flex;
-  justify-content: center;
-}
-.ticket-card .priority-display .star-container {
+.ticket-wrapper .priority-display .star-container {
   display: flex;
 }
-.ticket-card .priority-display .star-container h3 {
+.ticket-wrapper .priority-display .star-container h3 {
   margin: 7px;
   padding: 0px;
-  font-size: 28px;
+  font-size: 12px;
 }
-.ticket-card .progress-display {
-  min-width: 200px;
-}
-.ticket-card .progress-bar {
-  width: 100%;
-  height: 30px;
-  background-color: rgb(158, 158, 158);
+.ticket-wrapper .progress-bar {
+  height: 15px;
+  background-color: rgba(196, 196, 196, 0.5);
   border-radius: 15px;
   overflow: hidden;
+  color: #FFFFFF !important;
+  font-weight: 100;
+  font-size: 11px;
 }
-.ticket-card .progress-bar .progress-indicator {
+.ticket-wrapper .progress-bar .progress-indicator {
   background-color: #806CFB;
   height: 100%;
-}
-.ticket-card .delete-block {
   display: flex;
-  background: #cfcfcf;
-  box-shadow: 3px 6px 41px rgba(5, 3, 13, 0.05);
-  width: 50px;
-  margin: 2px;
   justify-content: center;
   align-items: center;
 }
-.ticket-card .delete-block .delete-icon {
+.ticket-wrapper .delete-block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+.ticket-wrapper .delete-block .delete-icon {
   width: 30px;
   height: 30px;
   border-radius: 10px;
@@ -197,6 +251,10 @@ nav .controls-container .icons {
   color: rgb(255, 255, 255);
   cursor: pointer;
 }
+.ticket-wrapper .divider {
+  opacity: 0.5;
+  border-bottom: 1.7px solid #FFFFFF;
+}
 
 .ticket {
   padding: 30px;
@@ -204,8 +262,6 @@ nav .controls-container .icons {
 }
 .ticket .ticket-container {
   width: 100%;
-  display: flex;
-  justify-content: center;
 }
 .ticket form {
   display: flex;
@@ -235,15 +291,14 @@ nav .controls-container .icons {
 }
 
 h3.category {
-  background: linear-gradient(59.04deg, #01CFD2 6%, #0183F8 91%);
   border-radius: 15px;
   max-width: 124px;
   width: 100%;
   height: 50px;
   color: #FFFFFF;
   position: relative;
-  top: 25px;
-  left: 26px;
+  top: 30px;
+  left: 10px;
   z-index: -1;
   padding: 5px 0 0 10px;
   font-style: normal;
@@ -301,7 +356,6 @@ h3.category {
 }
 
 .filter label {
-  display: inline-block;
   border: 1px solid #6046FF;
   border-radius: 30px;
   font-size: 20px;
@@ -317,7 +371,41 @@ h3.category {
 .filter input[type=radio] {
   display: none;
 }
-.filter * input[type=radio]:checked + label {
+.filter input[type=radio]:checked + label {
   background: linear-gradient(180deg, #8D7AFC 0%, #6349FF 100%);
   color: #FFFFFF;
+}
+
+.ticket-block {
+  max-width: 288px;
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+header {
+  width: 100%;
+  padding: 10px 30px 10px 30px;
+  box-shadow: 3px 6px 41px rgba(5, 3, 13, 0.05);
+}
+header .profile-scope {
+  cursor: pointer;
+}
+header .header-user {
+  width: 61px;
+  height: 61px;
+  border-radius: 50%;
+}
+header .header-user img {
+  width: 100%;
+  border-radius: 50%;
+}
+
+.charts canvas {
+  max-width: 350px;
+  max-height: 350px;
 }

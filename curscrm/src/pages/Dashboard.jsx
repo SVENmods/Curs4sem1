@@ -31,7 +31,6 @@ const SearchCard = (searchText, listOfCards) => {
 const Dashboard = () => {
   const [tickets, setTickets] = useState()
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterTerm, setFilterTerm] = useState("");
 
   // eslint-disable-next-line no-unused-vars
   const { categories, setCategories } = useContext(CategoriesContext)
@@ -59,62 +58,36 @@ const Dashboard = () => {
       setTimeout(() => {
         setLoading(false)
       }, 500)
-      // for(let i=0; formattedArray.length > i; i++){
-      //   console.log(tickets[i].title)
-      // }
+
       return formattedArray
     }
     getData()
 
-    // const Debounce = setTimeout(() => {
-    //   const SearchedCards = SearchCard(searchTerm, formattedArray);
-    //   setTickets(SearchedCards)
-
-    // }, 200);
-    // return () => {
-    //   clearTimeout(Debounce)
-    // };
 
     const DebounceFilter = setTimeout(() => {
-      // const FilteredCards = FilterCard(filterTerm, formattedArray);
       const SearchedCards = SearchCard(searchTerm, formattedArray);
 
-      // setTickets(FilteredCards)
 
       setTickets(SearchedCards)
-      // document.getElementsByName("jeff").checked = false
     }, 200);
     return () => {
       clearTimeout(DebounceFilter)
     }
 
 
-  }, [filterTerm, searchTerm])
+  }, [searchTerm])
 
   useEffect(() => {
     const DebounceFilter = setTimeout(() => {
-      // const FilteredCards = FilterCard(filterTerm, formattedArray);
       const SearchedCards = SearchCard(searchTerm, formattedArray);
 
-      // setTickets(FilteredCards)
-
       setTickets(SearchedCards)
-      // document.getElementsByName("jeff").checked = false
     }, 200);
     return () => {
       clearTimeout(DebounceFilter)
     }
-  }, [filterTerm, searchTerm])
+  }, [searchTerm])
 
-
-  // useEffect(() => {
-  //   const Debounce = setTimeout(() => {
-  //     const filteredCars = filterCars(searchTerm, formattedArray);
-  //     setTickets(filteredCars);
-  //   }, 300);
-
-  //   return () => clearTimeout(Debounce);
-  // }, [searchTerm]);
 
   useEffect(() => {
     setCategories([...new Set(tickets?.map(({ category }) => category))])
@@ -137,7 +110,6 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="dashboard">
-        <h1>We Done</h1>
         <div>
           <input
             autoFocus
@@ -154,7 +126,7 @@ const Dashboard = () => {
                     type="radio"
                     id={uniqueCategory}
                     value={uniqueCategory}
-                    name="jeff"
+                    name="star"
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                   <label htmlFor={uniqueCategory}>{uniqueCategory}</label>
@@ -163,7 +135,7 @@ const Dashboard = () => {
             <input
               type="radio"
               id="test3"
-              name="jeff"
+              name="star"
               value={""}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -184,7 +156,6 @@ const Dashboard = () => {
   }
   return (
     <div className="dashboard">
-      <h1>We Done</h1>
       <div>
         <input
           autoFocus
@@ -195,7 +166,7 @@ const Dashboard = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         {/* <input type="button" value={"clear"} onClick={document.getElementById("searchInp").value = ""} /> */}
-        <section className='filter d-flex flex-row'>
+        <section className='filter d-flex flex-md-row flex-wrap'>
           {tickets &&
             uniqueCategories?.map((uniqueCategory, filterKey) => (
               <div key={filterKey}>
@@ -203,7 +174,7 @@ const Dashboard = () => {
                   type="radio"
                   id={uniqueCategory}
                   value={uniqueCategory}
-                  name="jeff"
+                  name="star"
                   filter={uniqueCategory}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -213,7 +184,7 @@ const Dashboard = () => {
           <input
             type="radio"
             id="test3"
-            name="jeff"
+            name="star"
             value={""}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -224,11 +195,11 @@ const Dashboard = () => {
               <option value={"skeleton"}>skeleton</option>
         </select> */}
       </div>
-      <div className="ticket-container">
+      <div className="ticket-container row">
         {tickets &&
           uniqueCategories?.map((uniqueCategory, categoryIndex) => (
-            <div key={categoryIndex}>
-              <h3 className="category">{uniqueCategory}</h3>
+            <div key={categoryIndex} className="ticket-block d-flex flex-column">
+              <h3 className="category" style={{ backgroundColor: colors[categoryIndex] || colors[0] }}>{uniqueCategory}</h3>
               {tickets
                 .filter((ticket) => ticket.category === uniqueCategory)
                 .map((filteredTicket, _index) => (

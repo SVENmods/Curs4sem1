@@ -3,13 +3,13 @@ import NavTabs from '../UI/NavTabs';
 
 const Nav = () => {
 
-     return ( 
+     return (
           <nav>
                <div className="logo-container">
                     <img src={logo} alt="logo"></img>
                </div>
                <div className='controls-container'>
-                    <NavTabs/>
+                    <NavTabs />
                </div>
           </nav>
      );
