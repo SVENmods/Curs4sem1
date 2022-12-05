@@ -409,3 +409,9 @@ header .header-user img {
   max-width: 350px;
   max-height: 350px;
 }
+
+.toast-order {
+  position: absolute;
+  left: calc(100vw - 360px);
+  top: 80px;
+}
