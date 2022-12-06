@@ -6,11 +6,15 @@ import CategoriesContext from '../Hooks/context'
 import FormInput from '../UI/FormInput'
 import { useAuth0 } from "@auth0/auth0-react"
 import Toast from 'react-bootstrap/Toast';
+import MyVerticallyCenteredModal from '../UI/Modal'
+import Button from 'react-bootstrap/Button';
+
 
 
 const TicketPage = ({ editMode }) => {
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
   const [formData, setFormData] = useState({
     status: 'not started',
     progress: 0,
@@ -180,10 +184,10 @@ const TicketPage = ({ editMode }) => {
             </div>
           )
         }
-        <h1>{editMode ? 'Update Your Ticket' : 'Create a Ticket'}</h1>
+        <h1>{editMode ? 'Услуга:  ' + formData.title : 'Создание Услуги'}</h1>
         <div className="ticket-container">
           <div className='toast-order'>
-            <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
+            {/* <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
               <Toast.Header>
                 <img
                   src="holder.js/20x20?text=%20"
@@ -194,104 +198,115 @@ const TicketPage = ({ editMode }) => {
                 <small>Сейчас</small>
               </Toast.Header>
               <Toast.Body>Ваш заказ успешно оформлен</Toast.Body>
-            </Toast>
+            </Toast> */}
+
+
+            <MyVerticallyCenteredModal
+              show={modalShow}
+              onHide={() => setModalShow(false)}
+            />
           </div>
 
 
-          <form onSubmit={handleSubmit} id="ticketForm">
-            <section>
-              <label htmlFor="title">Title</label>
-              <FormInput
-                id="title"
-                name="title"
-                type="text"
-                onChange={handleChange}
-                required={true}
-                value={formData.title}
-                disabled={formData.owner != user.name && editMode}
-              />
-              {/* && user.name == undefined ? true : false */}
-              <label htmlFor="description">Description</label>
-              <FormInput
-                id="description"
-                name="description"
-                type="text"
-                onChange={handleChange}
-                required={true}
-                value={formData.description}
-                disabled={formData.owner != user.name && editMode}
-              />
-
-              <label>Category</label>
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                disabled={formData.owner != user.name && editMode}
-              >
-                {categories?.map((category, _index) => (
-                  <option key={_index} value={category}>{category}</option>
-                ))}
-              </select>
-
-              <label htmlFor="new-category">New Category</label>
-              <FormInput
-                id="new-category"
-                name="category"
-                type="text"
-                onChange={handleChange}
-                value={formData.category}
-                disabled={formData.owner != user.name && editMode}
-              />
-
-
-
-              {editMode && (
-                <>
-                  <label htmlFor="progress">Progress</label>
+          <form onSubmit={handleSubmit} id="ticketForm" className='row'>
+            {
+              editMode && formData.owner === user.name && (
+                <section>
+                  <label htmlFor="title">Title</label>
                   <FormInput
-                    type="range"
-                    id="progress"
-                    name="progress"
-                    value={formData.progress}
-                    min="0"
-                    max="100"
-                    step={10}
+                    id="title"
+                    name="title"
+                    type="text"
                     onChange={handleChange}
+                    required={true}
+                    value={formData.title}
+                    disabled={formData.owner != user.name && editMode}
+                  />
+                  {/* && user.name == undefined ? true : false */}
+                  <label htmlFor="description">Description</label>
+                  <FormInput
+                    id="description"
+                    name="description"
+                    type="text"
+                    onChange={handleChange}
+                    required={true}
+                    value={formData.description}
+                    disabled={formData.owner != user.name && editMode}
+                  />
+
+                  <label>Category</label>
+                  <select
+                    name="category"
+                    value={formData.category}
+                    onChange={handleChange}
+                    disabled={formData.owner != user.name && editMode}
+                  >
+                    {categories?.map((category, _index) => (
+                      <option key={_index} value={category}>{category}</option>
+                    ))}
+                  </select>
+
+                  <label htmlFor="new-category">New Category</label>
+                  <FormInput
+                    id="new-category"
+                    name="category"
+                    type="text"
+                    onChange={handleChange}
+                    value={formData.category}
                     disabled={formData.owner != user.name && editMode}
                   />
 
 
-                  <label>Status</label>
-                  <select
-                    name="status"
-                    value={formData.status}
-                    onChange={handleChange}
-                    disabled={formData.owner != user.name && editMode}
-                  >
-                    <option defaultValue={formData.status == 'done'} value="done">
-                      Done
-                    </option>
-                    <option
-                      defaultValue={formData.status == 'working on it'}
-                      value="working on it"
-                    >
-                      Working on it
-                    </option>
-                    <option defaultValue={formData.status == 'stuck'} value="stuck">
-                      Stuck
-                    </option>
-                    <option
-                      defaultValue={formData.status == 'not started'}
-                      value="not started"
-                    >
-                      Not Started
-                    </option>
-                  </select>
-                </>
-              )}
-              <FormInput id="submit" type="submit" />
-            </section>
+
+                  {editMode && (
+                    <>
+                      <label htmlFor="progress">Progress</label>
+                      <FormInput
+                        type="range"
+                        id="progress"
+                        name="progress"
+                        value={formData.progress}
+                        min="0"
+                        max="100"
+                        step={10}
+                        onChange={handleChange}
+                        disabled={formData.owner != user.name && editMode}
+                      />
+
+
+                      <label>Status</label>
+                      <select
+                        name="status"
+                        value={formData.status}
+                        onChange={handleChange}
+                        disabled={formData.owner != user.name && editMode}
+                      >
+                        <option defaultValue={formData.status == 'done'} value="done">
+                          Done
+                        </option>
+                        <option
+                          defaultValue={formData.status == 'working on it'}
+                          value="working on it"
+                        >
+                          Working on it
+                        </option>
+                        <option defaultValue={formData.status == 'stuck'} value="stuck">
+                          Stuck
+                        </option>
+                        <option
+                          defaultValue={formData.status == 'not started'}
+                          value="not started"
+                        >
+                          Not Started
+                        </option>
+                      </select>
+                    </>
+                  )}
+                  <FormInput id="submit" type="submit" />
+                </section>
+              )
+            }
+
 
             <section>
               <label htmlFor="owner">Owner</label>
@@ -441,19 +456,20 @@ const TicketPage = ({ editMode }) => {
               // && formData.progress != 100
               // formData.owner != user.name && formData.progress != 100 &&
               // formData.allRate.filter(el => el.nameR == user.name)
+              // && formData.allOrder.find((el) => {
+              //   if (el.nameR === user.name) {
+              //     console.log("yest zakaz")
+              //     return false
+              //   }
+              //   else {
+              //     console.log("net zakaza")
+              //     return true
+              //   }
+              // }) 
               editMode
               && formData.owner != user.name
               && formData.progress != 100
-              && formData.allOrder.find((el) => {
-                if (el.nameR === user.name) {
-                  console.log("yest zakaz")
-                  return false
-                }
-                else {
-                  console.log("net zakaza")
-                  return true
-                }
-              }) && (
+              && (
                 <section>
                   <div>
 
@@ -472,34 +488,21 @@ const TicketPage = ({ editMode }) => {
                       )
                     } */}
                     <button
-                      id='orderBtn liveToastBtn'
+                      id='liveToastBtn'
                       type='button'
                       onClick={function () {
                         setOrderState(true)
                         setShow(true)
                         formData.order = true
-                        if (formData.allOrder.find(el => el.nameR === user.name)) {
-                          document.getElementById('orderBtn').style.display = "none"
-                        }
+                        // if (formData.allOrder.find(el => el.nameR === user.name)) {
+                        //   document.getElementById('orderBtn').style.display = "none"
+                        // }
+                        document.getElementById('liveToastBtn').style.display = "none"
+                        setModalShow(true)
                       }}
                     >
                       Make an order
                     </button>
-                  </div>
-                  <div>
-                    <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: "11" }}>
-                      <div id="liveToast" className="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
-                        <div className="toast-header">
-                          <img src="..." className="rounded me-2" alt="..." />
-                          <strong className="me-auto">Bootstrap</strong>
-                          <small>11 mins ago</small>
-                          <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                        </div>
-                        <div className="toast-body">
-                          Hello, world! This is a toast message.
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </section>
               )
