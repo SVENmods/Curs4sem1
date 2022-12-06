@@ -61,6 +61,7 @@ const TicketPage = ({ editMode }) => {
         let newOrder = {
           nameR: user.name,
           order: formData.order = "true",
+          date: formData.dateO,
         }
 
         for (let i = 0; lengthR >= i; i++) {
@@ -108,7 +109,12 @@ const TicketPage = ({ editMode }) => {
       })
       const success = response.status === 200
       if (success) {
-        navigate('/')
+        setModalShow(true)
+        setTimeout(() => {
+          setModalShow(false)
+          navigate('/')
+        }, 3000)
+
       }
     }
 
@@ -119,7 +125,11 @@ const TicketPage = ({ editMode }) => {
       })
       const success = response.status === 200
       if (success) {
-        navigate('/')
+        setModalShow(true)
+        setTimeout(() => {
+          setModalShow(false)
+          navigate('/')
+        }, 3000)
       }
     }
   }
@@ -201,17 +211,16 @@ const TicketPage = ({ editMode }) => {
             </Toast> */}
 
 
-            <MyVerticallyCenteredModal
-              show={modalShow}
-              onHide={() => setModalShow(false)}
-            />
+
           </div>
 
 
           <form onSubmit={handleSubmit} id="ticketForm" className='row'>
+
             {
-              editMode && formData.owner === user.name && (
-                <section>
+
+              (
+                <section hidden={formData.owner != user.name || formData.owner == undefined}>
                   <label htmlFor="title">Title</label>
                   <FormInput
                     id="title"
@@ -233,7 +242,6 @@ const TicketPage = ({ editMode }) => {
                     value={formData.description}
                     disabled={formData.owner != user.name && editMode}
                   />
-
                   <label>Category</label>
                   <select
                     name="category"
@@ -302,11 +310,18 @@ const TicketPage = ({ editMode }) => {
                       </select>
                     </>
                   )}
-                  <FormInput id="submit" type="submit" />
+
                 </section>
               )
             }
 
+            <MyVerticallyCenteredModal
+              editMode={editMode}
+              show={modalShow}
+              onHide={() => {
+                setModalShow(false)
+              }}
+            />
 
             <section>
               <label htmlFor="owner">Owner</label>
@@ -338,15 +353,18 @@ const TicketPage = ({ editMode }) => {
                 )}
               </div>
             </section>
+
+
             {
-              editMode && formData.owner != user.name && (
+              editMode && formData.owner != user.name && formData.allOrder.find(el => el.nameR === user.name) && formData.progress == 100 && (
                 <section>
-                  <label htmlFor="nameR">Rater name</label>
+                  <label htmlFor="nameR" hidden={true}>Rater name</label>
                   <FormInput
                     type="text"
                     id="nameR"
                     name="nameR"
                     value={editMode ? formData.nameR = user.name : formData.nameR = user.name}
+                    hidden={true}
                   />
                   {/* <label htmlFor="count">Counter</label>
                   <FormInput
@@ -431,80 +449,110 @@ const TicketPage = ({ editMode }) => {
                     </div>
 
                     <div>
-                      <span>All comments</span>
+                      <span>Все отзывы</span>
                       <div id='allcom'>
                         {formData.allRate.map(function (d, idx) {
                           return (<li key={idx}>{d.nameR} - {d.comment} - {d.rateR}</li>)
                         })}
                       </div>
+
                     </div>
                   </div>
                 </section>
               )
             }
-            {
+            {/* {
               // .filter(el => el.nameR !== user.name)
 
               <div>
+                <span>Все заказы</span>
                 {formData.allOrder.map(function (d, idx) {
-                  return (<li key={idx}>{d.nameR} - {d.order}</li>)
+                  return (
+                    <div>
+                      <li key={idx}>{d.nameR} - {d.order} - {d.date}</li>
+                    </div>
+                  )
                 })}
               </div>
 
+
+            } */}
+
+            {
+
+              <div>
+                <span>Все заказы</span>
+                <select
+                  id='OrderDel'
+                >
+                  {formData.allOrder.map(function (d, idx) {
+                    return (
+
+                      <option key={idx} value={formData.allOrder.d}>{d.nameR + " " + d.order + " " + d.date}</option>
+
+                    )
+                  })}
+                </select>
+              </div>
+
+
+            }
+
+            {
+              formData.owner !== user.name && (
+                <section>
+                  <FormInput
+                    id="dateO"
+                    name="dateO"
+                    onChange={handleChange}
+                    type="date"
+                    value={formData.dateO}
+                  />
+                  <FormInput
+                    id="submit"
+                    type="submit"
+                    onClick={function () {
+                      setOrderState(true)
+                      // setShow(true)
+                      formData.order = true
+                      // if (formData.allOrder.find(el => el.nameR === user.name)) {
+                      //   document.getElementById('orderBtn').style.display = "none"
+                      // }
+                      // document.getElementById('liveToastBtn').style.display = "none"
+                      setModalShow(true)
+                    }}
+                    value={"Заказать"} />
+                  {
+                    editMode && formData.owner != user.name && formData.allOrder.find(el => el.nameR === user.name) && formData.progress == 100 && (
+                      <FormInput
+                        id="submit"
+                        type="submit"
+                        onClick={function () {
+                          setModalShow(true)
+                        }}
+                        value={"Отправить Отзыв"} />
+                    )
+                  }
+                </section>
+
+              )
             }
             {
-              // && formData.progress != 100
-              // formData.owner != user.name && formData.progress != 100 &&
-              // formData.allRate.filter(el => el.nameR == user.name)
-              // && formData.allOrder.find((el) => {
-              //   if (el.nameR === user.name) {
-              //     console.log("yest zakaz")
-              //     return false
-              //   }
-              //   else {
-              //     console.log("net zakaza")
-              //     return true
-              //   }
-              // }) 
-              editMode
-              && formData.owner != user.name
-              && formData.progress != 100
-              && (
-                <section>
-                  <div>
+              formData.owner === user.name && (
+                <FormInput
+                  id="submit"
+                  type="submit"
+                  onClick={function () {
+                    // setOrderState(true)
+                    // setShow(true)
+                    // formData.order = true
+                    // if (formData.allOrder.find(el => el.nameR === user.name)) {
+                    //   document.getElementById('orderBtn').style.display = "none"
+                    // }
+                    // document.getElementById('liveToastBtn').style.display = "none"
 
-                    {/* <label htmlFor="coment">Оформить заказ</label> */}
-                    {/* <FormInput
-                      id="order"
-                      name="order"
-                      type="button"
-                      onChange={madeAl()}
-                      value={"Make an order"}
-                    // onClick={}
-                    /> */}
-                    {/* {
-                      formData.allOrder.find(el => el.nameR === user.name) && (
-                        <span>заказ офорлен</span>
-                      )
-                    } */}
-                    <button
-                      id='liveToastBtn'
-                      type='button'
-                      onClick={function () {
-                        setOrderState(true)
-                        setShow(true)
-                        formData.order = true
-                        // if (formData.allOrder.find(el => el.nameR === user.name)) {
-                        //   document.getElementById('orderBtn').style.display = "none"
-                        // }
-                        document.getElementById('liveToastBtn').style.display = "none"
-                        setModalShow(true)
-                      }}
-                    >
-                      Make an order
-                    </button>
-                  </div>
-                </section>
+                  }}
+                  value={"Отправить"} />
               )
             }
           </form>
