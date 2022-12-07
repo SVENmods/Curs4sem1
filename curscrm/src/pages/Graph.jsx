@@ -20,14 +20,14 @@ const Graph = () => {
                // console.log(formattedArray)
                setTickets(formattedArray)
 
-               const dataPriority = []
+               const dataRating = []
 
                const dataProgress = []
 
                for (let i = 0; i < formattedArray.length; i++) {
-                    dataPriority.push(
+                    dataRating.push(
                          {
-                              title: formattedArray[i].title, priority: formattedArray[i].priority
+                              title: formattedArray[i].title, sumRate: formattedArray[i].sumRate
                          }
                     )
                     // console.log(formattedArray[i].priority)
@@ -50,11 +50,11 @@ const Graph = () => {
                          {
                               type: 'doughnut',
                               data: {
-                                   labels: dataPriority.map(row => row.title),
+                                   labels: dataRating.map(row => row.title),
                                    datasets: [
                                         {
-                                             label: 'Priority',
-                                             data: dataPriority.map(row => row.priority)
+                                             label: 'Rate',
+                                             data: dataRating.map(row => row.sumRate)
                                         }
                                    ]
                               }

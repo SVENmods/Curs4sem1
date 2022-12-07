@@ -4,6 +4,7 @@ import Dashboard from "./Dashboard";
 
 const Profile = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
+  const profilePage = true;
 
   if (isLoading) {
     return <div>Loading ...</div>;
@@ -16,7 +17,7 @@ const Profile = () => {
         <h2>{user.name}</h2>
         <p>{user.email}</p>
         {/* <p>{user.sub}</p> */}
-        <Dashboard />
+        <Dashboard profilePage={true} />
       </div>
     )
   );

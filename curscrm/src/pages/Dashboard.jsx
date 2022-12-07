@@ -2,6 +2,8 @@ import TicketCard from '../components/TicketCard'
 import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import CategoriesContext from '../Hooks/context'
+import { useAuth0 } from "@auth0/auth0-react"
+
 
 
 const SearchCard = (searchText, listOfCards) => {
@@ -28,14 +30,20 @@ const SearchCard = (searchText, listOfCards) => {
 
 };
 
-const Dashboard = () => {
+const Dashboard = (profilePage) => {
+  const { user, isAuthenticated, isLoading } = useAuth0();
   const [tickets, setTickets] = useState()
   const [searchTerm, setSearchTerm] = useState("");
+  console.log(profilePage)
+
+
 
   // eslint-disable-next-line no-unused-vars
   const { categories, setCategories } = useContext(CategoriesContext)
 
   const [loading, setLoading] = useState(false);
+
+
 
   const formattedArray = []
 
@@ -48,27 +56,54 @@ const Dashboard = () => {
       const arrayOfKeys = Object.keys(dataObject)
       const arrayOfData = Object.keys(dataObject).map((key) => dataObject[key])
 
+
       arrayOfKeys.forEach((key, index) => {
         const formmatedData = { ...arrayOfData[index] }
         formmatedData['documentId'] = key
         formattedArray.push(formmatedData)
       })
+      // console.log("tickets", tickets.filter(function (el) {
+      //   return el.owner === user.name
+      // }))
+
+      // if (profilePage) {
+      // let newTickets = tickets.filter(function (el) {
+      //   return el.owner === user.name
+      // })
+      //   console.log("tickets", tickets)
+      //   setTickets(newTickets)
+      //   console.log("tickets", tickets)
+      // }
+
       // console.log(formattedArray)
 
       setTimeout(() => {
         setLoading(false)
       }, 500)
-
+      // console.log(formattedArray)
       return formattedArray
     }
     getData()
 
 
     const DebounceFilter = setTimeout(() => {
-      const SearchedCards = SearchCard(searchTerm, formattedArray);
+      let SearchedCards = SearchCard(searchTerm, formattedArray);
 
+      // if (profilePage.profilePage === true) {
+      //   console.log(profilePage)
+      //   SearchedCards = SearchedCards.filter(function (el) {
+      //     return el.owner === user.name
+      //   })
+      // }
+      // if (profilePage) {
+
+      // console.log(tickets.filter(function (el) {
+      //   return el.owner === user.name
+      // }))
+      // }
 
       setTickets(SearchedCards)
+
     }, 200);
     return () => {
       clearTimeout(DebounceFilter)
@@ -87,6 +122,7 @@ const Dashboard = () => {
       clearTimeout(DebounceFilter)
     }
   }, [searchTerm])
+
 
 
   useEffect(() => {
@@ -102,10 +138,10 @@ const Dashboard = () => {
     '#FFD055',
     '#20B038',
   ]
-  console.log(tickets)
   const uniqueCategories = [
     ...new Set(tickets?.map(({ category }) => category)),
   ]
+
 
   if (loading) {
     return (
@@ -117,6 +153,7 @@ const Dashboard = () => {
             autoComplete="off"
             placeholder="Поиск по названию"
             onChange={(e) => setSearchTerm(e.target.value)}
+            className="search-inp"
           />
           <section className='filter d-flex flex-row'>
             {tickets &&
@@ -164,6 +201,8 @@ const Dashboard = () => {
           placeholder="Поиск по названию"
           id="searchInp"
           onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-inp"
+
         />
         {/* <input type="button" value={"clear"} onClick={document.getElementById("searchInp").value = ""} /> */}
         <section className='filter d-flex flex-md-row flex-wrap'>
@@ -195,6 +234,9 @@ const Dashboard = () => {
               <option value={"skeleton"}>skeleton</option>
         </select> */}
       </div>
+      {
+
+      }
       <div className="ticket-container row">
         {tickets &&
           uniqueCategories?.map((uniqueCategory, categoryIndex) => (
@@ -211,6 +253,7 @@ const Dashboard = () => {
                     status={filteredTicket.status}
                     category={filteredTicket.category}
                     filter={filteredTicket.title}
+                    profilePage={profilePage}
                   // uniqueCategory={filteredTicket.category}
                   />
                 ))}

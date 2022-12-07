@@ -95,14 +95,27 @@ const TicketPage = ({ editMode }) => {
           formData.sumRate = Math.round(arrayRate.map(i => x += i, x = 0).reverse()[0] / lengthR)
         }
 
+      }
 
+      if (document.getElementById("OrderDel")) {
+        // const valToDel = 
+        let allOrderArray = formData.allOrder
+        console.log(formData.allOrder)
+        let newAllOrderArray = allOrderArray.filter(el => {
+          return el.date != document.getElementById("OrderDel").value
+        })
+        console.log(formData.allOrder)
+        console.log(formData.allOrder = newAllOrderArray)
+        console.log(formData.allOrder)
+        formData.allOrder = newAllOrderArray
 
-
-
-
-
+        // console.log(document.getElementById("OrderDel").value)
 
       }
+
+
+
+
 
       const response = await axios.put(`http://localhost:8000/tickets/${id}`, {
         data: formData,
@@ -221,7 +234,7 @@ const TicketPage = ({ editMode }) => {
 
               (
                 <section hidden={formData.owner != user.name || formData.owner == undefined}>
-                  <label htmlFor="title">Title</label>
+                  <label htmlFor="title">Название</label>
                   <FormInput
                     id="title"
                     name="title"
@@ -232,7 +245,7 @@ const TicketPage = ({ editMode }) => {
                     disabled={formData.owner != user.name && editMode}
                   />
                   {/* && user.name == undefined ? true : false */}
-                  <label htmlFor="description">Description</label>
+                  <label htmlFor="description">Описание</label>
                   <FormInput
                     id="description"
                     name="description"
@@ -242,7 +255,7 @@ const TicketPage = ({ editMode }) => {
                     value={formData.description}
                     disabled={formData.owner != user.name && editMode}
                   />
-                  <label>Category</label>
+                  <label>Категория</label>
                   <select
                     name="category"
                     value={formData.category}
@@ -254,7 +267,7 @@ const TicketPage = ({ editMode }) => {
                     ))}
                   </select>
 
-                  <label htmlFor="new-category">New Category</label>
+                  <label htmlFor="new-category">Новая Категоря</label>
                   <FormInput
                     id="new-category"
                     name="category"
@@ -268,7 +281,7 @@ const TicketPage = ({ editMode }) => {
 
                   {editMode && (
                     <>
-                      <label htmlFor="progress">Progress</label>
+                      <label htmlFor="progress">Прогресс</label>
                       <FormInput
                         type="range"
                         id="progress"
@@ -282,7 +295,7 @@ const TicketPage = ({ editMode }) => {
                       />
 
 
-                      <label>Status</label>
+                      <label>Статус</label>
                       <select
                         name="status"
                         value={formData.status}
@@ -324,7 +337,7 @@ const TicketPage = ({ editMode }) => {
             />
 
             <section>
-              <label htmlFor="owner">Owner</label>
+              <label htmlFor="owner">Владелец</label>
               <FormInput
                 id="owner"
                 name="owner"
@@ -332,10 +345,10 @@ const TicketPage = ({ editMode }) => {
                 onChange={handleChange}
                 required={true}
                 value={editMode ? formData.owner : formData.owner = user.name}
-                disabled={formData.owner != user.name && editMode}
+                disabled={true}
               />
 
-              <label htmlFor="avatar">Avatar</label>
+              {/* <label htmlFor="avatar">Аватар</label> */}
               <FormInput
                 id="avatar"
                 name="avatar"
@@ -344,7 +357,16 @@ const TicketPage = ({ editMode }) => {
                 value={editMode ? formData.avatar : formData.avatar = user.picture}
                 disabled={true}
               />
+              {/* <FormInput
+                id="avatar"
+                name="avatar"
+                type="file"
+                onChange={handleChange}
+                value={editMode ? formData.avatar : formData.avatar = user.picture}
+                disabled={false}
+              /> */}
               <div className="img-preview">
+                <span>Аватар</span>
                 {/* formData.avatar &&  */}
                 {editMode ? formData.avatar && (
                   <img src={editMode ? formData.avatar : user.picture} alt="imagePreview" />
@@ -356,15 +378,16 @@ const TicketPage = ({ editMode }) => {
 
 
             {
-              editMode && formData.owner != user.name && formData.allOrder.find(el => el.nameR === user.name) && formData.progress == 100 && (
+              //  && formData.progress == 100
+              editMode && formData.owner != user.name && formData.allOrder.find(el => el.nameR === user.name) && (
                 <section>
-                  <label htmlFor="nameR" hidden={true}>Rater name</label>
+                  <label htmlFor="nameR" >Rater name</label>
                   <FormInput
                     type="text"
                     id="nameR"
                     name="nameR"
                     value={editMode ? formData.nameR = user.name : formData.nameR = user.name}
-                    hidden={true}
+
                   />
                   {/* <label htmlFor="count">Counter</label>
                   <FormInput
@@ -387,7 +410,7 @@ const TicketPage = ({ editMode }) => {
                     onChange={handleChange}
                     disabled={formData.owner == user.name && editMode}
                   /> */}
-                  <label>Rate a worker</label>
+                  <label>Оцените Исполнителя</label>
                   <div className="multiple-input-container">
                     <FormInput
                       id="priorityR-1"
@@ -438,7 +461,7 @@ const TicketPage = ({ editMode }) => {
                   <div>
                     <div>
 
-                      <label htmlFor="coment">Leave a comment</label>
+                      <label htmlFor="coment">Оставить комментарий</label>
                       <FormInput
                         id="comment"
                         name="comment"
@@ -479,28 +502,35 @@ const TicketPage = ({ editMode }) => {
             } */}
 
             {
+              editMode && formData.owner === user.name &&
+              (
+                <section>
+                  {/* editMode && formData.owner === user.name && */}
+                  <span>Дата для отказа в услуге</span>
+                  <select
+                    id='OrderDel'
+                    name='OrderDel'
+                    onChange={handleChange}
+                  // value={formData.OrderDel}
+                  >
+                    <option value={null} selected={true}>Оставить без изменений</option>
+                    {formData.allOrder?.map(function (d, idx) {
+                      return (
 
-              <div>
-                <span>Все заказы</span>
-                <select
-                  id='OrderDel'
-                >
-                  {formData.allOrder.map(function (d, idx) {
-                    return (
+                        <option key={idx} value={d.date}>{d.date + " " + d.nameR}</option>
+                        // d.nameR + " " + d.order + " " + 
 
-                      <option key={idx} value={formData.allOrder.d}>{d.nameR + " " + d.order + " " + d.date}</option>
-
-                    )
-                  })}
-                </select>
-              </div>
-
-
+                      )
+                    })}
+                  </select>
+                </section>
+              )
             }
 
             {
               formData.owner !== user.name && (
                 <section>
+                  <span>Выбрать дату офорления заказа</span>
                   <FormInput
                     id="dateO"
                     name="dateO"
@@ -523,7 +553,8 @@ const TicketPage = ({ editMode }) => {
                     }}
                     value={"Заказать"} />
                   {
-                    editMode && formData.owner != user.name && formData.allOrder.find(el => el.nameR === user.name) && formData.progress == 100 && (
+                    //  && formData.progress == 100
+                    editMode && formData.owner != user.name && formData.allOrder.find(el => el.nameR === user.name) && (
                       <FormInput
                         id="submit"
                         type="submit"
