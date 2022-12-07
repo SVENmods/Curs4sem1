@@ -30,12 +30,10 @@ const SearchCard = (searchText, listOfCards) => {
 
 };
 
-const Dashboard = (profilePage) => {
+const Dashboard = ({ profilePage }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   const [tickets, setTickets] = useState()
   const [searchTerm, setSearchTerm] = useState("");
-  console.log(profilePage)
-
 
 
   // eslint-disable-next-line no-unused-vars
@@ -90,10 +88,10 @@ const Dashboard = (profilePage) => {
       let SearchedCards = SearchCard(searchTerm, formattedArray);
 
       // if (profilePage.profilePage === true) {
-      //   console.log(profilePage)
-      //   SearchedCards = SearchedCards.filter(function (el) {
-      //     return el.owner === user.name
-      //   })
+      // console.log(profilePage)
+      SearchedCards = SearchedCards.filter(function (el) {
+        return el.owner === user.name
+      })
       // }
       // if (profilePage) {
 
@@ -139,7 +137,14 @@ const Dashboard = (profilePage) => {
     '#20B038',
   ]
   const uniqueCategories = [
-    ...new Set(tickets?.map(({ category }) => category)),
+    ...new Set(tickets?.filter(function (el) {
+      if (profilePage) {
+        return el.owner === user.name
+      }
+      else {
+        return el
+      }
+    }).map(({ category }) => category)),
   ]
 
 
@@ -242,7 +247,14 @@ const Dashboard = (profilePage) => {
           uniqueCategories?.map((uniqueCategory, categoryIndex) => (
             <div key={categoryIndex} className="ticket-block d-flex flex-column">
               <h3 className="category" style={{ backgroundColor: colors[categoryIndex] || colors[0] }}>{uniqueCategory}</h3>
-              {tickets
+              {tickets.filter(function (el) {
+                if (profilePage) {
+                  return el.owner === user.name
+                }
+                else {
+                  return el
+                }
+              })
                 .filter((ticket) => ticket.category === uniqueCategory)
                 .map((filteredTicket, _index) => (
                   <TicketCard

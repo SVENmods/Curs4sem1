@@ -5,10 +5,12 @@ import axios from 'axios';
 
 const Graph = () => {
      const [tickets, setTickets] = useState()
+     const [rowTicktes, setRowTickets] = useState()
      useEffect(() => {
           async function getData() {
                const response = await axios.get('http://localhost:8000/tickets')
                const dataObject = response.data.data
+               console.log(Object.keys(dataObject).map((key) => dataObject[key]))
                const arrayOfKeys = Object.keys(dataObject)
                const arrayOfData = Object.keys(dataObject).map((key) => dataObject[key])
                const formattedArray = []
@@ -17,8 +19,10 @@ const Graph = () => {
                     formmatedData['documentId'] = key
                     formattedArray.push(formmatedData)
                })
-               // console.log(formattedArray)
+               console.log(formattedArray)
                setTickets(formattedArray)
+               setRowTickets(response.data.data)
+
 
                const dataRating = []
 
@@ -41,7 +45,7 @@ const Graph = () => {
                          }
                     )
                     // console.log(formattedArray[i].priority)
-                    console.log(dataProgress)
+                    // console.log(dataProgress)
                }
 
                async function createChartPriority() {
@@ -53,7 +57,7 @@ const Graph = () => {
                                    labels: dataRating.map(row => row.title),
                                    datasets: [
                                         {
-                                             label: 'Rate',
+                                             label: 'Рейтинг услуги',
                                              data: dataRating.map(row => row.sumRate)
                                         }
                                    ]
@@ -71,7 +75,7 @@ const Graph = () => {
                                    labels: dataProgress.map(row => row.title),
                                    datasets: [
                                         {
-                                             label: 'Progress',
+                                             label: 'Прогресс услуги',
                                              data: dataProgress.map(row => row.progress)
                                         }
                                    ]
@@ -124,8 +128,17 @@ const Graph = () => {
 
      return (
           <div className='charts'>
-               <canvas id="myChartPriority"></canvas>
-               <canvas id="myChartPolar"></canvas>
+               <h2 className='h2'>Графики данных</h2>
+               <div className='row'>
+                    <canvas id="myChartPriority"></canvas>
+                    <canvas id="myChartPolar"></canvas>
+               </div>
+               {/* <div>
+                    <h1>Список данных</h1>
+                    {rowTicktes.map(function (d, idx) {
+                         return (<li key={idx}>{d.owner} - {d.title} - {d.category} - {d.description}</li>)
+                    })}
+               </div> */}
           </div>
      );
 }

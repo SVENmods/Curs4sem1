@@ -26,7 +26,7 @@ function App() {
               path="/ticket/:id"
               element={<TicketPage editMode={true} />}
             />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<Profile profilePage={true} />} />
             <Route path="/statistics" element={<Graph />} />
           </Routes>
           </div>

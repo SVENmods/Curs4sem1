@@ -7,7 +7,7 @@ import DeleteBlock from './DeleteBlock'
 import RateDisplay from './RateDisplay'
 import { useAuth0 } from '@auth0/auth0-react'
 
-const TicketCard = ({ color, ticket, title }) => {
+const TicketCard = ({ color, ticket, title, profilePage }) => {
 
 
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -38,8 +38,12 @@ const TicketCard = ({ color, ticket, title }) => {
             Стутус <span className='me-2'>:</span> <StatusDisplay status={ticket.status} />
           </div>
           {/* <PriorityDisplay priority={Number(ticket.priority)} /> */}
+          {
+            profilePage && (
+              <ProgressDisplay progress={Number(ticket.progress)} />
 
-          <ProgressDisplay progress={Number(ticket.progress)} />
+            )
+          }
         </div>
         {
           isAuthenticated && (

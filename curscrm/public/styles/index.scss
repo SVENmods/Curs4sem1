@@ -422,9 +422,14 @@ header{
 }
 
 .charts{
+     width: 100%;
+     padding: 30px;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
      canvas{
           max-width: 350px;
-          max-height: 350px;
+          max-height: 300px;
      }
 }
 
@@ -434,4 +439,30 @@ header{
      top: 80px;
 }
 
+.profile-page{
+     display: flex;
+     flex-direction: column;
+     width: 100%;
+     .profile-data{
+          width: 100%;
+          padding: 30px;
+          img{
+               max-width: 91px;
+               width: 100%;
+               border-radius: 50%;
+               border: 1px solid #D9D9D9;
+               box-shadow: 0px 4px 41px rgba(0, 0, 0, 0.03);
+               margin-bottom: 20px;
+          }
+     }
+     .preloader{
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100vw;
+          height: 100vh;
+          z-index: 3;
+          background: transparent;
+     }
+}
 

@@ -2,22 +2,34 @@ import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import Dashboard from "./Dashboard";
 
-const Profile = () => {
+const Profile = ({ profilePage }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
-  const profilePage = true;
 
   if (isLoading) {
-    return <div>Loading ...</div>;
+    return (
+      <div>
+        <div className="preloader" id='preloader'>
+          <div className="loader"></div>
+        </div>
+      </div>
+    );
   }
+  console.log(profilePage)
 
   return (
     isAuthenticated && (
-      <div>
-        <img src={user.picture} alt={user.name} />
-        <h2>{user.name}</h2>
-        <p>{user.email}</p>
-        {/* <p>{user.sub}</p> */}
-        <Dashboard profilePage={true} />
+      <div className="profile-page">
+        <div className="profile-data">
+          <img src={user.picture} alt={user.name} />
+          <h2>Имя: {user.name}</h2>
+          <p>Почта: {user.email}</p>
+          <p>Никнейм: {user.nickname}</p>
+
+          {/* <p>{user.sub}</p> */}
+          <h1>Здесь Вы можете просмотреть свои услуги</h1>
+        </div>
+
+        <Dashboard profilePage={profilePage} />
       </div>
     )
   );
