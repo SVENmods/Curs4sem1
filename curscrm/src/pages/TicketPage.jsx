@@ -15,6 +15,7 @@ const TicketPage = ({ editMode }) => {
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [modalShow, setModalShow] = useState(false);
+  const { categories, setCategories } = useContext(CategoriesContext)
   const [formData, setFormData] = useState({
     status: 'not started',
     progress: 0,
@@ -30,7 +31,6 @@ const TicketPage = ({ editMode }) => {
 
 
   // eslint-disable-next-line no-unused-vars
-  const { categories, setCategories } = useContext(CategoriesContext)
 
   // const ratingObj = {
   //   ids: {},
@@ -166,7 +166,6 @@ const TicketPage = ({ editMode }) => {
 
       }
       fetchData();
-
       // if (orderName === user.name) {
       //   setOrderFlag(true)
       //   console.log(orderFlag)
@@ -260,7 +259,7 @@ const TicketPage = ({ editMode }) => {
                     name="category"
                     value={formData.category}
                     onChange={handleChange}
-                    disabled={formData.owner != user.name && editMode}
+                  // disabled={formData.owner != user.name && editMode}
                   >
                     {categories?.map((category, _index) => (
                       <option key={_index} value={category}>{category}</option>
@@ -331,6 +330,7 @@ const TicketPage = ({ editMode }) => {
             <MyVerticallyCenteredModal
               editMode={editMode}
               show={modalShow}
+              backdrop="static"
               onHide={() => {
                 setModalShow(false)
               }}
@@ -513,7 +513,7 @@ const TicketPage = ({ editMode }) => {
                     onChange={handleChange}
                   // value={formData.OrderDel}
                   >
-                    <option value={null} selected={true}>Оставить без изменений</option>
+                    <option value={null} defaultValue={true}>Оставить без изменений</option>
                     {formData.allOrder?.map(function (d, idx) {
                       return (
 
@@ -537,6 +537,10 @@ const TicketPage = ({ editMode }) => {
                     onChange={handleChange}
                     type="date"
                     value={formData.dateO}
+                    onClick={() => {
+                      document.getElementById("dateO").min = new Date().toISOString().split("T")[0];
+
+                    }}
                   />
                   <FormInput
                     id="submit"
