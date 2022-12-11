@@ -3,13 +3,13 @@ const StatusDisplay = ({ status }) => {
      const getColor = (status) => {
           let color
           switch (status) {
-               case 'done':
+               case 'Готово':
                     color = '#20B038'
                     break
-               case 'working on it':
+               case 'В работе':
                     color = '#FFD055'
                     break
-               case 'stuck':
+               case 'В обработке':
                     color = '#ff1a35'
                     break
                default:

@@ -95,6 +95,17 @@ const Graph = () => {
           getData()
      }, [])
 
+     const exportData = () => {
+          const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
+               JSON.stringify(tickets)
+          )}`;
+          const link = document.createElement("a");
+          link.href = jsonString;
+          link.download = "data.json";
+
+          link.click();
+     };
+
      // useEffect(() => {
      //      const data = [
      //           { year: 2010, count: 10 },
@@ -139,6 +150,12 @@ const Graph = () => {
                          return (<li key={idx}>{d.owner} - {d.title} - {d.category} - {d.description}</li>)
                     })}
                </div> */}
+               <div className='d-flex flex-column align-items-center justify-content-center'>
+                    <span>Создать отчет</span>
+                    <button type="button" onClick={exportData} className="json mt-4">
+                         Export Data
+                    </button>
+               </div>
           </div>
      );
 }

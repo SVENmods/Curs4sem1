@@ -17,7 +17,7 @@ const TicketPage = ({ editMode }) => {
   const [modalShow, setModalShow] = useState(false);
   const { categories, setCategories } = useContext(CategoriesContext)
   const [formData, setFormData] = useState({
-    status: 'not started',
+    status: 'Открыта',
     progress: 0,
     timestamp: new Date().toISOString(),
     editMode: false,
@@ -56,8 +56,10 @@ const TicketPage = ({ editMode }) => {
     if (editMode) {
       // formData.allRate = []
       if (orderState == true) {
+        setModalShow(true)
         let lengthR = formData.allRate.length;
-
+        formData.status = "В обработке"
+        formData.nameOrdered = user.name;
         let newOrder = {
           nameR: user.name,
           order: formData.order = "true",
@@ -73,6 +75,7 @@ const TicketPage = ({ editMode }) => {
       }
 
       if (formData.allRate && user.name != formData.owner) {
+        setModalShow(true)
         let lengthR = formData.allRate.length;
 
         if (formData.rate != null) {
@@ -98,15 +101,17 @@ const TicketPage = ({ editMode }) => {
       }
 
       if (document.getElementById("OrderDel")) {
+        setModalShow(true)
         // const valToDel = 
         let allOrderArray = formData.allOrder
         console.log(formData.allOrder)
         let newAllOrderArray = allOrderArray.filter(el => {
           return el.date != document.getElementById("OrderDel").value
         })
-        console.log(formData.allOrder)
-        console.log(formData.allOrder = newAllOrderArray)
-        console.log(formData.allOrder)
+        // console.log(formData.allOrder)
+        // console.log(formData.allOrder = newAllOrderArray)
+        // console.log(formData.allOrder)
+        // formData.nameOrdered = ""
         formData.allOrder = newAllOrderArray
 
         // console.log(document.getElementById("OrderDel").value)
@@ -160,7 +165,7 @@ const TicketPage = ({ editMode }) => {
         const objRate = response.data.data.allRate
         const objOrder = response.data.data
         // console.log(response.data.data.allOrder.find(el => el.nameR === user.name))
-        console.log(objOrder)
+        // console.log(objOrder)
         setOrderFlag(objOrder)
         return objRate
 
@@ -194,8 +199,9 @@ const TicketPage = ({ editMode }) => {
   // else {
   //   console.log("dont have")
   // }
-  return (
-    isAuthenticated && (
+  if (isAuthenticated) {
+    return (
+
       <div className="ticket">
         {
           loading && (
@@ -207,6 +213,11 @@ const TicketPage = ({ editMode }) => {
           )
         }
         <h1>{editMode ? 'Услуга:  ' + formData.title : 'Создание Услуги'}</h1>
+        {
+          editMode && (
+            <p>{formData.description}</p>
+          )
+        }
         <div className="ticket-container">
           <div className='toast-order'>
             {/* <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
@@ -301,23 +312,23 @@ const TicketPage = ({ editMode }) => {
                         onChange={handleChange}
                         disabled={formData.owner != user.name && editMode}
                       >
-                        <option defaultValue={formData.status == 'done'} value="done">
-                          Done
+                        <option defaultValue={formData.status == 'Готово'} value="Готово">
+                          Готово
                         </option>
                         <option
-                          defaultValue={formData.status == 'working on it'}
-                          value="working on it"
+                          defaultValue={formData.status == 'В работе'}
+                          value="В работе"
                         >
-                          Working on it
+                          В работе
                         </option>
-                        <option defaultValue={formData.status == 'stuck'} value="stuck">
-                          Stuck
+                        <option defaultValue={formData.status == 'В обработке'} value="В обработке">
+                          В обработке
                         </option>
                         <option
-                          defaultValue={formData.status == 'not started'}
-                          value="not started"
+                          defaultValue={formData.status == 'Открыта'}
+                          value="Открыта"
                         >
-                          Not Started
+                          Открыта
                         </option>
                       </select>
                     </>
@@ -379,9 +390,9 @@ const TicketPage = ({ editMode }) => {
 
             {
               //  && formData.progress == 100
-              editMode && formData.owner != user.name && formData.allOrder.find(el => el.nameR === user.name) && (
+              editMode && formData.owner != user.name && formData.allOrder.find(el => el.nameR === user.name) && formData.progress == 100 && (
                 <section>
-                  <label htmlFor="nameR" >Rater name</label>
+                  <label htmlFor="nameR" >Имя пользователя</label>
                   <FormInput
                     type="text"
                     id="nameR"
@@ -419,6 +430,7 @@ const TicketPage = ({ editMode }) => {
                       onChange={handleChange}
                       value={1}
                       checked={formData.rate == 1}
+                      required
                     />
                     <label htmlFor="priorityR-1">1</label>
                     <FormInput
@@ -428,6 +440,7 @@ const TicketPage = ({ editMode }) => {
                       onChange={handleChange}
                       value={2}
                       checked={formData.rate == 2}
+                      required
                     />
                     <label htmlFor="priorityR-2">2</label>
                     <FormInput
@@ -530,40 +543,45 @@ const TicketPage = ({ editMode }) => {
             {
               formData.owner !== user.name && (
                 <section>
-                  <span>Выбрать дату офорления заказа</span>
-                  <FormInput
-                    id="dateO"
-                    name="dateO"
-                    onChange={handleChange}
-                    type="date"
-                    value={formData.dateO}
-                    onClick={() => {
-                      document.getElementById("dateO").min = new Date().toISOString().split("T")[0];
+                  {
+                    formData.status === "Открыта" && (
+                      <section className='d-flex flex-column justify-content-center align-items-center'>
+                        <span>Выбрать дату офорления заказа</span>
+                        <FormInput
+                          id="dateO"
+                          name="dateO"
+                          onChange={handleChange}
+                          type="date"
+                          value={formData.dateO}
+                          onClick={() => {
+                            document.getElementById("dateO").min = new Date().toISOString().split("T")[0];
 
-                    }}
-                  />
-                  <FormInput
-                    id="submit"
-                    type="submit"
-                    onClick={function () {
-                      setOrderState(true)
-                      // setShow(true)
-                      formData.order = true
-                      // if (formData.allOrder.find(el => el.nameR === user.name)) {
-                      //   document.getElementById('orderBtn').style.display = "none"
-                      // }
-                      // document.getElementById('liveToastBtn').style.display = "none"
-                      setModalShow(true)
-                    }}
-                    value={"Заказать"} />
+                          }}
+                        />
+                        <FormInput
+                          id="submit"
+                          type="submit"
+                          onClick={function () {
+                            setOrderState(true)
+                            // setShow(true)
+                            formData.order = true
+                            // if (formData.allOrder.find(el => el.nameR === user.name)) {
+                            //   document.getElementById('orderBtn').style.display = "none"
+                            // }
+                            // document.getElementById('liveToastBtn').style.display = "none"
+                          }}
+                          value={"Заказать"} />
+                      </section>
+                    )
+                  }
+
                   {
                     //  && formData.progress == 100
-                    editMode && formData.owner != user.name && formData.allOrder.find(el => el.nameR === user.name) && (
+                    editMode && formData.owner != user.name && formData.allOrder.find(el => el.nameR === user.name) && formData.progress == 100 && (
                       <FormInput
                         id="submit"
                         type="submit"
                         onClick={function () {
-                          setModalShow(true)
                         }}
                         value={"Отправить Отзыв"} />
                     )
@@ -593,7 +611,16 @@ const TicketPage = ({ editMode }) => {
           </form>
         </div>
       </div>
-    ))
+    )
+  }
+  else {
+    return (
+      <div className='ticket mt-5 d-flex flex-column w-100 justify-content-center align-items-center'>
+        <span className='h1'>Данные видны только зарегистрированным пользователям.</span>
+      </div>
+    )
+  }
+
 
 }
 

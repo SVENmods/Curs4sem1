@@ -466,3 +466,20 @@ header{
      }
 }
 
+.toast{
+     position: absolute;
+     left: 80%;
+}
+
+.json{
+     background: linear-gradient(180deg, #8D7AFC 0%, #6349FF 100%);
+          border-radius: 30px;
+          color: #FFFFFF;
+          max-width: 200px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          max-height: 50px;
+          padding: 15px;
+}
+

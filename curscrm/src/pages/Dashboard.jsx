@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import CategoriesContext from '../Hooks/context'
 import { useAuth0 } from "@auth0/auth0-react"
+import Toast from 'react-bootstrap/Toast';
 
 
 
@@ -30,11 +31,13 @@ const SearchCard = (searchText, listOfCards) => {
 
 };
 
-const Dashboard = ({ profilePage }) => {
+const Dashboard = ({ profilePage, userobj }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   const [tickets, setTickets] = useState()
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [show, setShow] = useState(false);
+  const [countOrder, setCountOrder] = useState(0);
+  const [orderTitles, setOrderTitles] = useState();
 
   // eslint-disable-next-line no-unused-vars
   const { categories, setCategories } = useContext(CategoriesContext)
@@ -127,7 +130,36 @@ const Dashboard = ({ profilePage }) => {
     setCategories([...new Set(tickets?.map(({ category }) => category))])
   }, [setCategories, tickets])
 
+  useEffect(() => {
+    async function getOreder() {
+      if (userobj) {
+        let titles = []
+        setTimeout(() => {
+          setShow(true)
+        }, 300);
+        console.log(userobj)
+        // console.log(tickets.filter(function (el) {
+        //   return el.nameOrdered === userobj.name
+        // }))
+        let arrayOrder = tickets?.filter(function (el) {
+          return el.nameOrdered === userobj.name
+        })
+        console.log(arrayOrder)
+        setCountOrder(Object.keys(arrayOrder).length)
+        arrayOrder.forEach(el => {
+          titles.push(el.title)
+        })
 
+        setOrderTitles(titles)
+        // console.log(tickets.filter(function (el) {
+        //   return el.allOrder.filter(function (ela) {
+        //     return ela.nameR === userobj.name
+        //   })
+        // }))
+      }
+    }
+    getOreder();
+  }, [tickets, userobj])
 
   const colors = [
     '#6046FF',
@@ -151,6 +183,31 @@ const Dashboard = ({ profilePage }) => {
   if (loading) {
     return (
       <div className="dashboard">
+        {/* delay={3000} autohide */}
+        <Toast onClose={() => setShow(false)} show={show} className="toast" >
+          <Toast.Header>
+            <img
+              src="holder.js/20x20?text=%20"
+              className="rounded me-2"
+              alt=""
+            />
+            <strong className="me-auto">Заказ</strong>
+            <small>Сейчас</small>
+          </Toast.Header>
+          <Toast.Body>
+            <div className='d-flex flex-column'>
+              Вашe количество заказов {countOrder}
+
+              <div className='mt-3'>
+                <span className='mb-2'>Наименование заказов:</span>
+                {
+                  orderTitles?.map(function (d, idx) {
+                    return (<li key={idx}>{d}</li>)
+                  })}
+              </div>
+            </div>
+          </Toast.Body>
+        </Toast>
         <div>
           <input
             autoFocus
@@ -181,7 +238,7 @@ const Dashboard = ({ profilePage }) => {
               value={""}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <label htmlFor="test3">no filter</label>
+            <label htmlFor="test3">сбросить</label>
           </section>
           {/* <select onChange={(e) => setSearchTerm(e.target.value)}>
               <option value={"Bug"}>Bug</option>
@@ -198,6 +255,30 @@ const Dashboard = ({ profilePage }) => {
   }
   return (
     <div className="dashboard">
+      <Toast onClose={() => setShow(false)} show={show} className="toast" >
+        <Toast.Header>
+          <img
+            src="holder.js/20x20?text=%20"
+            className="rounded me-2"
+            alt=""
+          />
+          <strong className="me-auto">Заказ</strong>
+          <small>Сейчас</small>
+        </Toast.Header>
+        <Toast.Body>
+          <div className='d-flex flex-column'>
+            Вашe количество заказов {countOrder}
+
+            <div className='mt-3'>
+              <span className='mb-2'>Наименование заказов:</span>
+              {
+                orderTitles?.map(function (d, idx) {
+                  return (<li key={idx}>{d}</li>)
+                })}
+            </div>
+          </div>
+        </Toast.Body>
+      </Toast>
       <div>
         <input
           autoFocus
@@ -232,7 +313,7 @@ const Dashboard = ({ profilePage }) => {
             value={""}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <label htmlFor="test3">no filter</label>
+          <label htmlFor="test3">сбросить</label>
         </section>
         {/* <select onChange={(e) => setSearchTerm(e.target.value)}>
               <option value={"Bug"}>Bug</option>

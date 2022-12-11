@@ -7,10 +7,12 @@ import CategoriesContext from "./Hooks/context";
 import Profile from "./pages/Profile";
 import Graph from "./pages/Graph";
 import Header from "./components/Header";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function App() {
   const [categories, setCategories] = useState(null);
   const value = { categories, setCategories };
+  const { user, isAuthenticated, isLoading } = useAuth0();
 
   return (
     <div className="App">
@@ -20,7 +22,7 @@ function App() {
           <div className="content">
           <Header/>
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/" element={<Dashboard userobj={user} />} />
             <Route path="/ticket" element={<TicketPage />} />
             <Route
               path="/ticket/:id"
