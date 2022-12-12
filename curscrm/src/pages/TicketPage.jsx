@@ -429,7 +429,6 @@ const TicketPage = ({ editMode }) => {
                       type="radio"
                       onChange={handleChange}
                       value={1}
-                      checked={formData.rate == 1}
                       required
                     />
                     <label htmlFor="priorityR-1">1</label>
@@ -439,7 +438,6 @@ const TicketPage = ({ editMode }) => {
                       type="radio"
                       onChange={handleChange}
                       value={2}
-                      checked={formData.rate == 2}
                       required
                     />
                     <label htmlFor="priorityR-2">2</label>
@@ -449,7 +447,6 @@ const TicketPage = ({ editMode }) => {
                       type="radio"
                       onChange={handleChange}
                       value={3}
-                      checked={formData.rate == 3}
                     />
                     <label htmlFor="priorityR-3">3</label>
                     <FormInput
@@ -458,7 +455,6 @@ const TicketPage = ({ editMode }) => {
                       type="radio"
                       onChange={handleChange}
                       value={4}
-                      checked={formData.rate == 4}
                     />
                     <label htmlFor="priorityR-4">4</label>
                     <FormInput
@@ -467,7 +463,6 @@ const TicketPage = ({ editMode }) => {
                       type="radio"
                       onChange={handleChange}
                       value={5}
-                      checked={formData.rate == 5}
                     />
                     <label htmlFor="priorityR-5">5</label>
                   </div>
